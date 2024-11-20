@@ -9,11 +9,11 @@ $list = [
 ?>
 
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;">
+    <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;">
         <x-breadcrumb :list='$list' />
     </div>
 
-    <div class=" d-flex justify-content-between mb-2">
+    <div class=" d-flex justify-content-between  mb-3 mt-4">
         <legend class="legend">Tiêu chí nhân viên tháng {{$danhMucThangNam->thang}} , {{$nhanVien->name}}</legend>
         <div class="mb-2">
             <a href="{{route('danh-muc-thang-nam.create')}}" class="btn btn-primary">

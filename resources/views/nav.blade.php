@@ -1,3 +1,9 @@
+<style>
+    a:hover{
+        color: rgb(185 28 28);
+
+    }
+</style>
 <nav class="py-3 pr-2">
     <ul class="gap-2 text-lg">
         {{-- @can('view_danh_muc_thang_nam') --}}

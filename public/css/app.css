@@ -1858,10 +1858,6 @@ select {
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
-.text-sm\/6 {
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-}
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
@@ -2204,6 +2200,10 @@ select {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
+.hover\:text-red-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity));
+}
 .focus\:z-10:focus {
   z-index: 10;
 }
@@ -2357,10 +2357,6 @@ select {
 
   .sm\:top-0 {
     top: 0px;
-  }
-
-  .sm\:col-span-3 {
-    grid-column: span 3 / span 3;
   }
 
   .sm\:col-span-4 {

@@ -7,21 +7,23 @@ $list = [
 ?>
 
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;" >
+    <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;" >
         <x-breadcrumb :list='$list' />
     </div>
 
     <div>
-        <div class=" d-flex justify-content-between">
+        <div class=" d-flex justify-content-between mb-3 mt-4">
             <legend class="legend">Tiêu chí tháng {{$danhMucThangNam->thang}}</legend>
             <div class="mb-2">
 
+                @can('add_tieu_chi_theo_thang')
 
-                <a href="{{route('tieu-chi-theo-thang.them-tieu-chi-thang', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-primary">
-                    <span class="material-symbols-outlined" >
-                        add_task
-                    </span>
-                    Thêm</a>
+                    <a href="{{route('tieu-chi-theo-thang.them-tieu-chi-thang', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-primary">
+                        <span class="material-symbols-outlined" >
+                            add_task
+                        </span>
+                        Thêm</a>
+                @endcan
             </div>
         </div>
 
@@ -37,10 +39,10 @@ $list = [
             </div>
         @endif
 
-        <div class="">
+        <div class="table-responsive">
 
-            <table class="table">
-                <thead>
+            <table class="table  table-bordered">
+                <thead class="table-light">
                     <tr>
                         <th>STT</th>
                         <th>Tên tiêu chí</th>
@@ -55,24 +57,30 @@ $list = [
                             <td>{{$key +1}}</td>
                             <td>{{$tieuChi->tenTieuChi->ten_tieu_chi}}</td>
                             <td>
-                                <a href="{{route('tieu-chi-theo-thang.sua-tieu-chi-thang', ['danhMucThangNam' =>$danhMucThangNam,
-                                                                                            'id_thang_nam'=> $tieuChi->id_thang_nam ,
-                                                                                            'id_tieu_chi'=> $tieuChi->id_tieu_chi,
-                                                                                            ])}}">
+                                @can('edit_tieu_chi_theo_thang')
+                                    <a href="{{route('tieu-chi-theo-thang.sua-tieu-chi-thang', ['danhMucThangNam' =>$danhMucThangNam,
+                                        'id_thang_nam'=> $tieuChi->id_thang_nam ,
+                                        'id_tieu_chi'=> $tieuChi->id_tieu_chi,
+                                        ])}}">
                                     <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;" title="Sửa">
-                                        border_color
+                                    border_color
                                     </span>
-                                </a>
-                                <?php
+                                    </a>
+                                @endcan
 
-                                    $url = route('tieu-chi-theo-thang.delete', ['id_thang_nam' => $tieuChi->id_thang_nam, 'id_tieu_chi' => $tieuChi->id_tieu_chi]);
+                                @can('delete_tieu_chi_theo_thang')
+                                    <?php
 
-                                ?>
-                                <button type="button" onclick="xoaTieuChi('{{$url}}')">
-                                    <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
-                                        delete
-                                    </span>
-                                </button>
+                                        $url = route('tieu-chi-theo-thang.delete', ['id_thang_nam' => $tieuChi->id_thang_nam, 'id_tieu_chi' => $tieuChi->id_tieu_chi]);
+
+                                    ?>
+                                    <button type="button" onclick="xoaTieuChi('{{$url}}')">
+                                        <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
+                                            delete
+                                        </span>
+                                    </button>
+                                @endcan
+
                                     {{-- <a href="" title="Xóa">
                                         <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
                                             delete

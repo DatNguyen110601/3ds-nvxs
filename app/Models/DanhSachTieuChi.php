@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\DiemTheoTieuChi;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DanhSachTieuChi extends Model
 {
@@ -20,4 +22,15 @@ class DanhSachTieuChi extends Model
         self::TT_HOAT_DONG => 'Hoạt động',
         self::TT_TAT => 'Tắt'
     ];
+
+
+    /**
+     * Get all of the comments for the DanhSachTieuChi
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function diemTheoTieuChi(): HasMany
+    {
+        return $this->hasMany(DiemTheoTieuChi::class, 'id_tieu_chi', 'id');
+    }
 }

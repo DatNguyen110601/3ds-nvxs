@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\ViTri;
 use App\Models\DiemThang;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -10,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -63,7 +65,11 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    CONST EMPLOYEE = 1;
+    CONST PUBLIC_USER = 2;
 
+    CONST STATUS_ACTIVE = 1;
+    CONST STATUS_BANNED = 0;
     /**
      * Get all of the comments for the User
      *
@@ -73,4 +79,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(DiemThang::class, 'id_nhan_vien', 'id');
     }
+
+    /**
+     * Get all of the comments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function viTri(): HasMany
+    {
+        return $this->hasMany(ViTri::class, 'id_user', 'id');
+    }
+
 }

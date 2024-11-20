@@ -1,9 +1,14 @@
 <?php
 $list = [
     route('danh-muc-thang-nam.index')=>'Danh mục tháng năm',
-    '#' => "Nhân viên năm {$danhMucThangNam->nam}/ tháng {$danhMucThangNam->thang}"
+    '#' => "Nhân viên năm {$nam}/ tháng {$thang}"
 ];
 ?>
+<style>
+    .btn-info{
+        background: #31d2f2 !important;
+    }
+</style>
 
 <x-layout>
     <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;">
@@ -11,16 +16,23 @@ $list = [
     </div>
 
     <div class=" d-flex justify-content-between mb-3 mt-4">
-        <legend class="legend">Tiêu chí nhân viên tháng {{$danhMucThangNam->thang}}</legend>
-
+        <legend class="legend">Tiêu chí nhân viên tháng @if ($danhMucThangNam!= null)
+            {{$danhMucThangNam->thang}}
+        @else
+            {{$thang}}
+        @endif
+        </legend>
+        @if ($danhMucThangNam!= null)
         @can('duyet_diem')
-        <div class="mb-2">
-            <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-success" title="Duyệt">
-                <span class="material-symbols-outlined">
-                    task_alt
-                </span>
-                Duyệt</a>
-        </div>
+
+            <div class="mb-2">
+                <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-success" title="Duyệt">
+                    <span class="material-symbols-outlined">
+                        task_alt
+                    </span>
+                    Duyệt</a>
+            </div>
+
         @endcan
 
         @can('export_excel')
@@ -45,7 +57,7 @@ $list = [
 
         </div>
         @endcan
-
+        @endif
     </div>
 
     @if (session('status'))
@@ -59,6 +71,25 @@ $list = [
         {{ session('error') }}
         </div>
     @endif
+
+    <form action="" method="GET" class="mb-3">
+        <div class="d-flex">
+            <div class="row g-3">
+                <div class="col-auto">
+                    <input type="number" name="year" value="{{ $nam }}" class="form-control" placeholder="Nhập năm">
+                </div>
+                <div class="col-auto">
+                    <input type="number" name="month" value="{{ $thang }}" class="form-control" placeholder="Nhập tháng">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-info">Tìm</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
     <div class="table-responsive">
 
         <table class="table  table-bordered">
@@ -66,7 +97,7 @@ $list = [
                 <tr>
                     <th scope="col">STT</th>
                     <th scope="col">Tên Nhân Viên</th>
-                    <th>Phòng Ban</th>
+                    <th scope="col">Phòng ban</th>
                     <th scope="col">Tổng điểm</th>
                     <th scope="col">Duyệt</th>
                     <th scope="col">Hành động</th>
@@ -80,19 +111,17 @@ $list = [
                 <tr>
                     <td>{{$key + 1}}</td>
                     <td>{{$value->nhanVien->name}}<br>
-                        <span style="color: #565555; font-size:13px;">
+                    <span style="color: #565555; font-size:13px;">
                             @foreach ($value->nhanVien->viTri as $item)
                                 ({{$item->ten_vi_tri}})
                             @endforeach
                         </span>
                     </td>
-
-                        <td>
-                            @foreach ($value->nhanVien->viTri as $item)
-                                {{$item->phong_ban}}
-                            @endforeach
-                        </td>
-
+                    <td>
+                        @foreach ($value->nhanVien->viTri as $item)
+                            {{$item->phong_ban}}
+                        @endforeach
+                    </td>
                     <td>{{$value->tong_diem}}</td>
                     @if ($value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
                         <td>
@@ -160,19 +189,17 @@ $list = [
                         @endif
 
                         @endcan
-                            @can('delete_nhan_vien_trong_dmtn')
+                        @can('delete_nhan_vien_trong_dmtn')
                             <?php
-                            $urlXoa = route('nhan-vien-trong-dmtn.delete', ['danhMucThangNam'=> $danhMucThangNam,
-                                                                            'diemThang' => $value]);
-                            ?>
-                            <button type="button" class=" text-red-600 " onclick="xoaThongTin('{{$urlXoa}}')">
-                                <span class="material-symbols-outlined fs-3">
-                                    delete
-                                </span>
-                            </button>
-
+                                    $urlXoa = route('nhan-vien-trong-dmtn.delete', ['danhMucThangNam'=> $danhMucThangNam,
+                                                                                    'diemThang' => $value]);
+                                ?>
+                                <button type="button" class=" text-red-600 " onclick="xoaThongTin('{{$urlXoa}}')">
+                                    <span class="material-symbols-outlined fs-3">
+                                        delete
+                                    </span>
+                                </button>
                         @endcan
-
                     </td>
                 </tr>
             @endforeach

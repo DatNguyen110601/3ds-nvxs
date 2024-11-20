@@ -35,8 +35,8 @@ class TieuChiTheoThangController extends Controller
 
     public function create(Request $request){
         $danhMucThangNam = DanhMucThangNam::all();
-        $dsTieuChi = DanhSachTieuChi::all();
-        $dsNhanVien = User::all();
+        $dsTieuChi = DanhSachTieuChi::where('trang_thai' , 1)->get();
+        $dsNhanVien = User::where('status', User::STATUS_ACTIVE)->where('type', User::EMPLOYEE)->get();
         return view('tieu-chi-theo-thang.create',['danhMucThangNam' => $danhMucThangNam,
                                                     'dsTieuChi' => $dsTieuChi,
                                                     'dsNhanVien' => $dsNhanVien
@@ -63,7 +63,8 @@ class TieuChiTheoThangController extends Controller
         //Điểm tháng
         if(!empty($request->tat_ca_nhan_vien)){
             // $arrayNhanVien = [];
-            $arrayNhanVien = User::pluck('id')->toArray();
+            $arrayNhanVien = User::where('status', User::STATUS_ACTIVE)
+                                ->where('type', User::EMPLOYEE)->pluck('id')->toArray();
 
             $jobNhanVien = $this->themDiemThang($arrayNhanVien, $validated['id_thang_nam'], $validated['check_tieu_chi']);
 
@@ -103,7 +104,7 @@ class TieuChiTheoThangController extends Controller
         // };
 
         return redirect()->route('tieu-chi-theo-thang.index')
-                        ->with('status', "Thêm tiêu chí {$createTieuChiTheoThang->thang}");
+                        ->with('status', "Thêm tiêu chí {$createTieuChiTheoThang->thang} thành công!");
 
     }
 
@@ -114,7 +115,8 @@ class TieuChiTheoThangController extends Controller
         $diemThang = $danhMucThangNam->diemThang;
 
         $dsTieuChi = DanhSachTieuChi::all();
-        $dsNhanVien = User::all();
+        $dsNhanVien = User::where('status', User::STATUS_ACTIVE)->where('type', User::EMPLOYEE)->get();
+
         return view('tieu-chi-theo-thang.edit',['danhMucThangNam' => $danhMucThangNam,
                                                     'dsTieuChi' => $dsTieuChi,
                                                     'dsNhanVien' => $dsNhanVien,
@@ -202,7 +204,7 @@ class TieuChiTheoThangController extends Controller
         // dd($filteredTieuChi);
         // dd($danhMucThangNam->dsTieuChiThang);
         $dsTieuChi = DanhSachTieuChi::all();
-        $dsNhanVien = User::all();
+        $dsNhanVien = User::where('status', User::STATUS_ACTIVE)->where('type', User::EMPLOYEE)->get();
         return view('tieu-chi-theo-thang.them-tieu-chi-thang', ['danhMucThangNam' => $danhMucThangNam,
                                                                 'filteredTieuChi' => $filteredTieuChi,
                                                                 'dsNhanVien' => $dsNhanVien
@@ -215,7 +217,8 @@ class TieuChiTheoThangController extends Controller
         $tieuChiTheoThang = TieuChiTheoThang::where('id_thang_nam', $id_thang_nam)
                                             ->where('id_tieu_chi', $id_tieu_chi)->first();
 
-        $dsNhanVien = User::all();
+        $dsNhanVien = User::where('status', User::STATUS_ACTIVE)->where('type', User::EMPLOYEE)->get();
+
         $diemThang = $danhMucThangNam->diemThang;
         // dd($tieuChiTheoThang);
         return view('tieu-chi-theo-thang.sua-tieu-chi-thang', ['danhMucThangNam' => $danhMucThangNam,

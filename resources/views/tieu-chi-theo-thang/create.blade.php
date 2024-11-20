@@ -5,11 +5,17 @@ $list = [
 ];
 ?>
 
+<style>
+    .btn-primary{
+        background: #0a58ca !important;
+    }
+</style>
+
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;" >
+    <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;" >
         <x-breadcrumb :list='$list' />
     </div>
-    <div class=" d-flex justify-content-between mb-2">
+    <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Thêm tiêu chí tháng</legend>
     </div>
     <div class="col-6">
@@ -28,8 +34,8 @@ $list = [
             </div>
 
             <div class="col-12">
-                <table class="table">
-                    <thead>
+                <table class="table  table-bordered mt-5">
+                    <thead class="table-light">
                         <tr>
 
                             <th class="w-20">
@@ -38,10 +44,10 @@ $list = [
 
                             <th>STT</th>
                             <th>Tên tiêu chí</th>
-                            <th>Điểm tối đa</th>
                             <th>Điểm tối thiểu</th>
+                            <th>Điểm tối đa</th>
                             <th>Hệ số</th>
-                            <th>Trạng thái</th>
+                            {{-- <th>Trạng thái</th> --}}
 
                         </tr>
                     </thead>
@@ -54,10 +60,10 @@ $list = [
                             </td>
                             <td>{{$key +1}}</td>
                             <td>{{$tieuChi->ten_tieu_chi}}</td>
-                            <td>{{$tieuChi->diem_toi_da}}</td>
                             <td>{{$tieuChi->diem_toi_thieu}}</td>
+                            <td>{{$tieuChi->diem_toi_da}}</td>
                             <td>{{$tieuChi->he_so}}</td>
-                            <td>{{$tieuChi->trang_thai}}</td>
+                            {{-- <td>{{$tieuChi->trang_thai}}</td> --}}
 
                         </tr>
                         @endforeach
@@ -69,7 +75,9 @@ $list = [
                 <label for="nhan-vien" >Chọn nhân viên</label>
                 <select name="nhan-vien[]" id="nhan-vien" multiple>
                     @foreach ($dsNhanVien as $nhanVien)
-                        <option value="{{$nhanVien->id}}">{{$nhanVien->name}}</option>
+                        <option value="{{$nhanVien->id}}">@foreach ($nhanVien->viTri as $viTri)
+                           {{$viTri->phong_ban}}
+                        @endforeach - {{$nhanVien->name}} </option>
                     @endforeach
                 </select>
 
@@ -82,7 +90,7 @@ $list = [
                 <span class="ms-1"> Tất cả nhân viên</span>
             </div>
 
-            <input type="submit" value="Thêm"/>
+            <input type="submit" class="btn btn-primary" value="Thêm"/>
         </form>
     </div>
 

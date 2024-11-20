@@ -5,11 +5,17 @@ $list = [
 ];
 ?>
 
+<style>
+    .btn-primary{
+        background: #0a58ca !important;
+    }
+</style>
+
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;" >
+    <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;" >
         <x-breadcrumb :list='$list' />
     </div>
-    <div class=" d-flex justify-content-between mb-2">
+    <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Sửa tiêu chí tháng</legend>
     </div>
     <div class="col-6">
@@ -39,7 +45,7 @@ $list = [
                             <th>Điểm tối đa</th>
                             <th>Điểm tối thiểu</th>
                             <th>Hệ số</th>
-                            <th>Trạng thái</th>
+                            {{-- <th>Trạng thái</th> --}}
 
                         </tr>
                     </thead>
@@ -63,7 +69,7 @@ $list = [
                             <td>{{$tieuChi->diem_toi_da}}</td>
                             <td>{{$tieuChi->diem_toi_thieu}}</td>
                             <td>{{$tieuChi->he_so}}</td>
-                            <td>{{$tieuChi->trang_thai}}</td>
+                            {{-- <td>{{$tieuChi->trang_thai}}</td> --}}
 
                         </tr>
                         @endforeach
@@ -82,7 +88,9 @@ $list = [
                         });
                     ?>
 
-                        <option value="{{$nhanVien->id}}" {{ $isChecked ? 'selected' : '' }}>{{$nhanVien->name}}</option>
+                        <option value="{{$nhanVien->id}}" {{ $isChecked ? 'selected' : '' }}>@foreach ($nhanVien->viTri as $viTri)
+                            {{$viTri->phong_ban}}
+                         @endforeach - {{$nhanVien->name}}</option>
                     @endforeach
                 </select>
 
@@ -95,7 +103,7 @@ $list = [
                 <span class="ms-1"> Tất cả nhân viên</span>
             </div>
 
-            <input type="submit" value="Cập nhật"/>
+            <input type="submit" class="btn btn-primary" value="Cập nhật"/>
         </form>
     </div>
 

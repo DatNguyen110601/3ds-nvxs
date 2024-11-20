@@ -58,5 +58,20 @@ class DanhSachTieuChiController extends Controller
         $danhSachTieuChi->update($validated);
         return redirect()->route('tieu-chi-nhan-vien.index')->with('status', 'Sửa tiêu chí thành công!');
     }
+
+    public function destroy(DanhSachTieuChi $danhSachTieuChi){
+        $dsTieuChi = DanhSachTieuChi::all();
+        $diemTheoTieuChi = $danhSachTieuChi->diemTheoTieuChi;
+        if(count($diemTheoTieuChi) == 0){
+
+            $danhSachTieuChi->delete();
+            return redirect()->route('tieu-chi-nhan-vien.index',['dsTieuChi' => $dsTieuChi])
+                            ->with('status', 'Xóa tiêu chí thành công!');
+        }
+        else{
+            return redirect()->route('tieu-chi-nhan-vien.index',['dsTieuChi' => $dsTieuChi])
+                            ->with('error', 'Xóa thất bại! tiêu chí đã được áp dụng!');
+        }
+
+    }
 }
-    

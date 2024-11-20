@@ -15,6 +15,7 @@ use App\Http\Controllers\DiemTheoTieuChiController;
 use App\Http\Controllers\NhanVienXuatSacController;
 use App\Http\Controllers\ChamDiemNhanVienController;
 use App\Http\Controllers\TieuChiTheoThangController;
+use App\Http\Controllers\NhanVienTrongDMTNController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,23 +28,23 @@ use App\Http\Controllers\TieuChiTheoThangController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
 
 Route::middleware('auth:sanctum')->group(function(){
-
+Route::get('/', [DanhMucThangNamController::class, 'home'])->name('home');
 Route::prefix('/danh-muc-thang-nam')->as('danh-muc-thang-nam.')->group(function() {
     Route::get('/', [DanhMucThangNamController::class, 'index'])->name('index');
     Route::get('/show/{danhMucThangNam}', [DanhMucThangNamController::class, 'show'])->name('show');
@@ -56,7 +57,6 @@ Route::prefix('/danh-muc-thang-nam')->as('danh-muc-thang-nam.')->group(function(
     Route::get('/show/{danhMucThangNam}/nhan-vien/{nhanVien}/', [DanhMucThangNamController::class, 'xemDiemNhanVienThang'])->name('xem-diem-nhan-vien-thang');
 // xuất file excel
     Route::get('/danh-muc-thang-nam/{danhMucThangNam}/xuat-file-excel', [DanhMucThangNamController::class, 'exportExcel'])->name('exportExcel');
-
 
 });
 
@@ -74,6 +74,9 @@ Route::prefix('/tieu-chi-nhan-vien')->as('tieu-chi-nhan-vien.')->group(function(
     Route::post('/store', [DanhSachTieuChiController::class, 'store'])->name('store');
     Route::get('/edit/{danhSachTieuChi}', [DanhSachTieuChiController::class, 'edit'])->name('edit');
     Route::put('/edit/{danhSachTieuChi}/update', [DanhSachTieuChiController::class, 'update'])->name('update');
+    Route::delete('/{danhSachTieuChi}/delete', [DanhSachTieuChiController::class, 'destroy'])->name('delete');
+
+
 });
 
 // //ds tiêu chí tháng
@@ -119,6 +122,16 @@ Route::prefix('/nhan-vien-xuat-sac')->as('nhan-vien-xuat-sac.')->group(function(
     Route::get('/nhan-vien-xuat-sac', [NhanVienXuatSacController::class, 'index'])->name('index');
 
 });
+
+
+//thêm nhân viên vào tháng
+Route::prefix('')->as('nhan-vien-trong-dmtn.')->group(function() {
+    Route::get('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/create', [NhanVienTrongDMTNController::class, 'create'])->name('create');
+    Route::post('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/store', [NhanVienTrongDMTNController::class, 'store'])->name('store');
+    Route::delete('/danh-muc-thang-nam/{danhMucThangNam}/diem-thang/{diemThang}/delete', [NhanVienTrongDMTNController::class, 'destroy'])->name('delete');
+
+});
+
 
 
 });

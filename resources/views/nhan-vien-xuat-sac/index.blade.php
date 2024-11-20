@@ -3,16 +3,17 @@ $list = [
     '#'=>'Nhân viên xuất sắc',
 ];
 ?>
-
+<style>
+    .btn-info{
+        background: #31d2f2 !important;
+    }
+</style>
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;">
+    <div class="flex items-center justify-between border-b py-2  breadcrumb"  style="border-block-color: red;">
         <x-breadcrumb :list='$list' />
     </div>
 
-    <div class=" d-flex justify-content-between mb-2">
-        <legend class="legend">Nhân viên xuất sắc</legend>
 
-    </div>
     @if (session('status'))
         <div class="alert alert-success">
         {{ session('status') }}
@@ -25,18 +26,79 @@ $list = [
         </div>
     @endif
 
-    <div class="">
+
+    <div class="container">
+        <legend class="legend text-center mb-4">Danh sách nhân viên xuất sắc - Năm {{ $year }}</legend>
+
+        <form action="" method="GET" class="mb-3">
+            <div class="d-flex justify-content-end">
+                <div class="row g-3">
+                    <div class="col-auto">
+                        <input type="number" name="year" value="{{ $year }}" class="form-control" placeholder="Nhập năm">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-info">Tìm</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-bordered text-center table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>Stt</th>
+                        <th>Nhân viên</th>
+                        <th>Tổng điểm</th>
+                        @for ($i = 1; $i <= 12; $i++)
+                            <th>Tháng {{ $i }}</th>
+                        @endfor
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                    <?php $key = 1; ?>
+                    @foreach ($data as $item)
+
+                    <tr>
+                        <td>{{$key++}}</td>
+
+                        <td>
+                            <a href="{{route('nhan-vien.show', ['danhSachNhanVien' => $item['nhanVien']])}}">
+                                {{ $item['nhan_vien'] }} <br>
+                                <span style="color: #565555; font-size:13px">
+                                    @foreach ($item['nhanVien']->viTri as $viTri)
+                                        ({{$viTri->ten_vi_tri}})
+                                    @endforeach
+                                </span>
+                            </a>
+
+                        </td>
+                        <td>{{ $item['tong_diem'] }}</td>
+                        @for ($i = 1; $i <= 12; $i++)
+                            <td>{{ $item['diem_thang'][$i] }}</td>
+                        @endfor
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 
-        <table class="table">
-            <head style="color: #bcbccb; font-weight: 100;">
+<?php /*
+
+    <div class="table-responsive">
+        <table class="table  table-bordered">
+            <thead class="table-light">
                 <tr>
                     <th scope="col">Năm</th>
                     <th scope="col">Nhân viên xuất sắc</th>
                     <th scope="col">Hành động</th>
 
                 </tr>
-            </head>
+            </thead>
 
 
             @if(!empty($top3TongDiems))
@@ -75,8 +137,6 @@ $list = [
                         {{-- <td><a href="{{route('tieu-chi-theo-thang.show', $danhMuc)}}">{{count($danhMuc->dsTieuChiThang)}}</a></td> --}}
                         <td>
 
-
-
                         </td>
                     </tr>
 
@@ -86,6 +146,7 @@ $list = [
 
         </table>
     </div>
+    */ ?>
 
 <form action="" method="POST" class="col-6" id="frm_xoa_thong_tin">
     @method('DELETE')

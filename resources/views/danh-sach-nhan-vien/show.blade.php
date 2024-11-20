@@ -7,14 +7,14 @@ $list = [
 ?>
 
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;" >
+    <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;" >
         <x-breadcrumb :list='$list' />
     </div>
 
 <div>
-    <div class=" d-flex justify-content-between mb-2">
+    <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Nhân viên {{$danhSachNhanVien->name}}</legend>
-       
+
     </div>
     @if (session('status'))
         <div class="alert alert-success">
@@ -28,9 +28,10 @@ $list = [
         </div>
     @endif
 
-    <div class="">
-        <table class="table">
-            <thead>
+    <div class="table-responsive">
+
+        <table class="table  table-bordered">
+            <thead class="table-light">
                 <tr>
 
                     <th>Năm</th>
@@ -54,7 +55,7 @@ $list = [
                                 table_eye
                             </span>
                         </a>
-                        <a href="" title=Sửa>
+                        {{-- <a href="" title=Sửa>
                             <span class="material-symbols-outlined fs-3"  style="color: #0dcaf0;">
                                 border_color
                             </span>
@@ -63,7 +64,7 @@ $list = [
                             <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
                                 delete
                             </span>
-                        </a>
+                        </a> --}}
                     </td>
                 </tr>
                 @endforeach

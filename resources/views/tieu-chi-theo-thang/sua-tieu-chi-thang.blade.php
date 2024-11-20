@@ -7,11 +7,16 @@ $list = [
 ];
 ?>
 
+<style>
+    .btn-primary{
+        background: #0a58ca !important;
+    }
+</style>
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;" >
+    <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;" >
         <x-breadcrumb :list='$list' />
     </div>
-    <div class=" d-flex justify-content-between mb-2">
+    <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Sửa tiêu chí tháng {{$danhMucThangNam->thang}} (năm {{$danhMucThangNam->nam}})</legend>
     </div>
     <div class="col-6">
@@ -28,9 +33,10 @@ $list = [
                 </select>
             </div>
 
-            <div class="col-12">
-                <table class="table">
-                    <thead>
+            <div class="table-responsive">
+
+                <table class="table  table-bordered">
+                    <thead class="table-light">
                         <tr>
 
                             <th class="w-20">
@@ -42,7 +48,7 @@ $list = [
                             <th>Điểm tối đa</th>
                             <th>Điểm tối thiểu</th>
                             <th>Hệ số</th>
-                            <th>Trạng thái</th>
+                            {{-- <th>Trạng thái</th> --}}
 
                         </tr>
                     </thead>
@@ -58,7 +64,7 @@ $list = [
                             <td>{{$tieuChiTheoThang->tenTieuChi->diem_toi_da}}</td>
                             <td>{{$tieuChiTheoThang->tenTieuChi->diem_toi_thieu}}</td>
                             <td>{{$tieuChiTheoThang->tenTieuChi->he_so}}</td>
-                            <td>{{$tieuChiTheoThang->tenTieuChi->trang_thai}}</td>
+                            {{-- <td>{{$tieuChiTheoThang->tenTieuChi->trang_thai}}</td> --}}
 
                         </tr>
 
@@ -81,7 +87,11 @@ $list = [
                         });
                     ?>
 
-                        <option value="{{$nhanVien->id}}" {{ $isChecked ? 'selected' : '' }}>{{$nhanVien->name}}</option>
+                        <option value="{{$nhanVien->id}}" {{ $isChecked ? 'selected' : '' }}>
+                            @foreach ($nhanVien->viTri as $viTri)
+                            {{$viTri->phong_ban}}
+                            @endforeach - {{$nhanVien->name}}
+                        </option>
                     @endforeach
                 </select>
 
@@ -94,7 +104,7 @@ $list = [
                 <span class="ms-1"> Tất cả nhân viên</span>
             </div>
 
-            <input type="submit" value="Cập nhật"/>
+            <input type="submit" class="btn btn-primary" value="Cập nhật"/>
         </form>
     </div>
 

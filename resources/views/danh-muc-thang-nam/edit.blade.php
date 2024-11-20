@@ -4,18 +4,28 @@ $list = [
     '#' => "Sửa danh mục tháng {$danhMucThangNam->thang} năm {$danhMucThangNam->nam}"
 ];
 ?>
-
+<style>
+    .btn-primary{
+        background: #0a58ca !important;
+    }
+</style>
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb" style="border-block-color: red;">
+    <div class="flex items-center justify-between border-b py-2 breadcrumb" style="border-block-color: red;">
         <x-breadcrumb :list='$list' />
     </div>
 
 <div  class="col-6">
+
+
+    <div class="form-wrapper">
+        <legend class="legend mb-4">Sửa danh mục tháng năm</legend>
+
+
     <form action="{{route('danh-muc-thang-nam.update',$danhMucThangNam)}}" method="POST">
         @method('PUT')
         @csrf
-        <div class="input-group mb-3">
-            <span for="nam" class="input-group-text">Chọn năm</span>
+        <div class="mb-4">
+            <label for="nam" class="form-label">Chọn năm</label>
             <select name="nam" id="nam" class="form-control">
 
                 @foreach (range(2023, 2040) as $nam)
@@ -28,8 +38,9 @@ $list = [
             </select>
         </div>
 
-        <div class="input-group mb-3">
-            <span for="thang" class="input-group-text">Chọn tháng</span>
+        <div class="mb-4">
+            <label for="nam" class="form-label">Chọn tháng</label>
+
             <select name="thang" id="thang" class="form-control">
 
                 @foreach (range(1, 12) as $thang)
@@ -41,10 +52,9 @@ $list = [
                 @endforeach
             </select>
         </div>
-        <button type="button" class="bg-current text-red-600 ">
 
-        </button>
-        <input type="submit" value="Cập nhật"/>
+        <input type="submit" class="btn btn-primary" value="Cập nhật"/>
     </form>
+    </div>
 </div>
 </x-layout>

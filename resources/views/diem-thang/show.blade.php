@@ -9,19 +9,13 @@ $list = [
 ?>
 
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;">
+    <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;">
         <x-breadcrumb :list='$list' />
     </div>
 
-    <div class=" d-flex justify-content-between mb-2">
+    <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Điểm tháng {{$danhMucThangNam->thang}}, nhân viên {{$nhanVien->name}}</legend>
-        <div class="mb-2">
-            <a href="{{route('danh-muc-thang-nam.create')}}" class="btn btn-primary">
-                <span class="material-symbols-outlined" >
-                    add_task
-                </span>
-                Thêm</a>
-        </div>
+        
     </div>
 
     @if (session('status'))
@@ -35,10 +29,10 @@ $list = [
         {{ session('error') }}
         </div>
     @endif
-    <div>
+    <div class="table-responsive">
 
-        <table class="table ">
-            <head>
+        <table class="table  table-bordered">
+            <thead class="table-light">
                 <tr>
 
                     <th scope="col">Nhân Viên</th>
@@ -47,7 +41,7 @@ $list = [
                     <th scope="col">Hành động</th>
 
                 </tr>
-            </head>
+            </thead>
 
             @if(!empty($diemThang))
             <tbody class="text-center">

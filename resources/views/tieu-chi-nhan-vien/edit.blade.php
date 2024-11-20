@@ -4,12 +4,17 @@ $list = [
     '#' => 'Sửa tiêu chí'
 ];
 ?>
+<style>
+    .btn-primary{
+        background: #0a58ca !important;
+    }
+</style>
 
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb" style="border-block-color: red;" >
+    <div class="flex items-center justify-between border-b py-2 breadcrumb" style="border-block-color: red;" >
         <x-breadcrumb :list='$list' />
     </div>
-    <div class=" d-flex justify-content-between mb-2">
+    <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Sửa tiêu chí "{{$danhSachTieuChi->ten_tieu_chi}}"</legend>
     </div>
     <div class="col-6">
@@ -41,7 +46,7 @@ $list = [
                 </select>
 
             </div>
-            <input type="submit" value="Cập nhật" />
+            <input type="submit" class="btn btn-primary" value="Cập nhật" />
         </form>
     </div>
 </x-layout>

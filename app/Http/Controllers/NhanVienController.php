@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Hash;
 class NhanVienController extends Controller
 {
     public function index(){
-        $danhSachNhanVien = User::all();
-        $users = User::all();
+        $danhSachNhanVien = User::where('status', User::STATUS_ACTIVE)->where('type', User::EMPLOYEE)->get();
+
         return view('danh-sach-nhan-vien.index', ['danhSachNhanVien' => $danhSachNhanVien]);
     }
 

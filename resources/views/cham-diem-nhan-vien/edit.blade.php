@@ -6,6 +6,11 @@ $list = [
         '#' => "Sửa điểm nhân viên {$nhanVien->name}"
 ];
 ?>
+<style>
+    .btn-primary{
+        background: #0a58ca !important;
+    }
+</style>
 
 <x-layout>
     <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;" >

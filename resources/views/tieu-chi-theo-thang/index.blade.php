@@ -6,19 +6,22 @@ $list = [
 ?>
 
 <x-layout>
-    <div class="flex items-center justify-between border-b p-4 breadcrumb"  style="border-block-color: red;" >
+    <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;" >
         <x-breadcrumb :list='$list' />
     </div>
 
     <div>
-        <div class=" d-flex justify-content-between mb-2">
+        <div class=" d-flex justify-content-between mb-3 mt-4">
             <legend class="legend">Danh sách tiêu chí theo tháng</legend>
             <div>
+                @can('add_tieu_chi_theo_thang')
                 <a href="{{route('tieu-chi-theo-thang.create')}}" class="btn btn-primary">
                     <span class="material-symbols-outlined" >
                         add_task
                     </span>
                     Thêm</a>
+                @endcan
+
             </div>
         </div>
 
@@ -34,10 +37,10 @@ $list = [
             </div>
         @endif
 
-        <div class="">
+        <div class="table-responsive">
 
-            <table class="table">
-                <thead>
+            <table class="table  table-bordered">
+                <thead class="table-light">
                     <tr>
                         <th>STT</th>
                         <th>Năm</th>
