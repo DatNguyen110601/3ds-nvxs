@@ -1,6 +1,6 @@
 <?php
 $list = [
-
+    route('home') =>'Trang chủ',
     route('diem-thang.index') => "Điểm tháng",
     route('nhan-vien.show', ['danhSachNhanVien' => $nhanVien]) => "{$nhanVien->name}",
     '#' => "năm {$danhMucThangNam->nam}/ tháng {$danhMucThangNam->thang}",
@@ -15,7 +15,7 @@ $list = [
 
     <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Điểm tháng {{$danhMucThangNam->thang}}, nhân viên {{$nhanVien->name}}</legend>
-        
+
     </div>
 
     @if (session('status'))

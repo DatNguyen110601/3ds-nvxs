@@ -20,30 +20,31 @@ class DanhMucThangNamController extends Controller
     use DiemThangTraits;
 
 
-    public function home(Request $request){
-        $nam = $request->input('year', date('Y'));
-        $thang = $request->input('month', date('n'));
+    // public function home(Request $request){
+    //     $nam = $request->input('year', date('Y'));
+    //     $thang = $request->input('month', date('n'));
 
-        $danhMucThangNam = DanhMucThangNam::where('nam', $nam)->where('thang', $thang)->first();
-        $diemThang = null;
-        if($danhMucThangNam){
-            $diemThang = $danhMucThangNam->diemThang;
-        }
-
-
+    //     $danhMucThangNam = DanhMucThangNam::where('nam', $nam)->where('thang', $thang)->first();
+    //     $diemThang = null;
+    //     if($danhMucThangNam){
+    //         $diemThang = $danhMucThangNam->diemThang;
+    //     }
 
 
-        return view('danh-muc-thang-nam.home', [
-            'danhMucThangNam' => $danhMucThangNam,
-            'diemThang' => $diemThang,
-            'nam' => $nam,
-            'thang' => $thang
 
-         ]);
-    }
+
+    //     return view('danh-muc-thang-nam.home', [
+    //         'danhMucThangNam' => $danhMucThangNam,
+    //         'diemThang' => $diemThang,
+    //         'nam' => $nam,
+    //         'thang' => $thang
+
+    //      ]);
+    // }
 
     public function index(){
-        $danhMucThangNam = DanhMucThangNam::all();
+        // $danhMucThangNam = DanhMucThangNam::all();
+        $danhMucThangNam = DanhMucThangNam::orderBy('nam', 'asc')->orderBy('thang', 'asc')->get();
         return view('danh-muc-thang-nam.index', ['danhMucThangNam'=> $danhMucThangNam]);
     }
 
@@ -58,19 +59,32 @@ class DanhMucThangNamController extends Controller
             'nam' => 'required',
         ]);
 
-        $danhMucThangNam = DanhMucThangNam::where('nam', $validated['nam'])->first();
-        if(!$danhMucThangNam){
-            foreach(range(1, 12) as $thang){
+        foreach(range(1, 12) as $thang){
+            $danhMucThangNam = DanhMucThangNam::where('nam', $validated['nam'])
+                                                ->where('thang', $thang)->first();
+            if(!$danhMucThangNam){
                 DanhMucThangNam::create([
-                    'nam' => $validated['nam'],
-                    'thang' => $thang
-                ]
-
-                );
-            };
-            return redirect()->route('danh-muc-thang-nam.index')->with('status', 'Thêm thành công!');
+                                'nam' => $validated['nam'],
+                                'thang' => $thang
+                ]);
+            }
         }
-        return redirect()->route('danh-muc-thang-nam.index')->with('error', 'Thêm thất bại! Danh mục năm đã được tạo trước đó!');
+        return redirect()->route('danh-muc-thang-nam.index')->with('status', 'Thêm thành công!');
+
+
+        // $danhMucThangNam = DanhMucThangNam::where('nam', $validated['nam'])->first();
+        // if(!$danhMucThangNam){
+        //     foreach(range(1, 12) as $thang){
+        //         DanhMucThangNam::create([
+        //             'nam' => $validated['nam'],
+        //             'thang' => $thang
+        //         ]
+
+        //         );
+        //     };
+        //     return redirect()->route('danh-muc-thang-nam.index')->with('status', 'Thêm thành công!');
+        // }
+        // return redirect()->route('danh-muc-thang-nam.index')->with('error', 'Thêm thất bại! Danh mục năm đã được tạo trước đó!');
 
     }
 
@@ -86,9 +100,18 @@ class DanhMucThangNamController extends Controller
             'thang' => 'required',
             'nam' => 'required',
         ]);
-        $danhMucThangNam->update($validated);
+        $ktDanhMucThangNam = $danhMucThangNam->where('nam', $validated['nam'])
+                                            ->where('thang', $validated['thang'])->first();
+        if(!$ktDanhMucThangNam){
+            $danhMucThangNam->update($validated);
+            return redirect()->route('danh-muc-thang-nam.index')->with('status', 'Sửa thành công!');
 
-        return redirect()->route('danh-muc-thang-nam.index')->with('status', 'Sửa thành công!');
+        }
+        else{
+            return redirect()->route('danh-muc-thang-nam.index')->with('error', 'Sửa thất bại!, danh mục đã tồn tại!');
+
+        }
+
 
     }
 
@@ -110,7 +133,10 @@ class DanhMucThangNamController extends Controller
             return redirect()->route('danh-muc-thang-nam.index')->with('status', 'Xóa thành công!');
 
         }else{
-            return redirect()->route('danh-muc-thang-nam.index')->with('error', 'Xóa thất bại!');
+            foreach($danhMucThangNam->diemThang as $diemThang){
+                $diemThang->delete();
+            }
+            return redirect()->route('danh-muc-thang-nam.index')->with('status', 'Xóa thành công!');
         };
 
     }

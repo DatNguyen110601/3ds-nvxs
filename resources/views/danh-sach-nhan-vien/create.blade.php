@@ -1,5 +1,6 @@
 <?php
 $list = [
+    route('home') =>'Trang chủ',
     route('nhan-vien.index') =>'Danh mục nhân viên',
     '#' => 'Thêm nhân viên'
 ];

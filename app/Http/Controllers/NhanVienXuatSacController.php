@@ -31,7 +31,7 @@ class NhanVienXuatSacController extends Controller
                 }
             }
 
-            return [
+            return[
                 'nhanVien' => $nhanVien,
                 'nhan_vien' => $nhanVien->name,
                 'tong_diem' => $totalPoints,
@@ -40,11 +40,38 @@ class NhanVienXuatSacController extends Controller
         });
         $data = $data->sortByDesc('tong_diem');
 
-        return view('nhan-vien-xuat-sac.index', [
-            'data' => $data,
-            'year' => $year,
-        ]);
-    }
+
+
+        // Lấy điểm cao nhất (top 1) và điểm thứ hai (top 2)
+        $top1 = $data->first(); // Người có điểm cao nhất
+
+        if($top1['tong_diem'] == 0){
+            $data = null;
+            return view('nhan-vien-xuat-sac.index', [
+                'data' => $data,
+                'year' => $year,
+            ]);
+        };
+        $top2 = $data->skip(1)->first(); // Người có điểm cao thứ 2
+        $top3 = $data->skip(2)->first(); // Người có điểm cao thứ 3
+
+        // Kiểm tra nếu điểm top 1 và top 2 cách quá xa so với top 3
+        if ($top1['tong_diem'] - $top3['tong_diem'] > 10) { // Thay 10 bằng giá trị cách biệt bạn cho là quá xa
+            // Nếu cách biệt quá xa, chỉ lấy top 1 và top 2
+            $data = $data->take(2);
+        } else {
+            // Nếu không, lấy tất cả nhân viên có điểm bằng hoặc cao hơn điểm của top 3
+            $maxPoint = $top3['tong_diem'];
+            $data = $data->filter(function ($item) use ($maxPoint) {
+                return $item['tong_diem'] >= $maxPoint;
+            });
+        }
+
+            return view('nhan-vien-xuat-sac.index', [
+                'data' => $data,
+                'year' => $year,
+            ]);
+        }
 
 
 

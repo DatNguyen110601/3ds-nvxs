@@ -1,5 +1,6 @@
 <?php
 $list = [
+    route('home') =>'Trang chủ',
     route('tieu-chi-theo-thang.index')=>'Danh sách tiêu chí theo tháng',
     '#' => 'Thêm tiêu chí tháng'
 ];

@@ -1,5 +1,6 @@
 <?php
 $list = [
+    route('home') =>'Trang chủ',
     '#'=>'Danh mục tháng năm',
 ];
 ?>

@@ -51,7 +51,32 @@ class NhanVienController extends Controller
                                                 'diemThang' => $diemThang]);
     }
 
-    // public function edit(NhanVien $danhSachNhanVien){
-    //     return view('danh-sach-nhan-vien.edit', ['danhSachNhanVien' => $danhSachNhanVien]);
-    // }
+    public function edit(User $danhSachNhanVien){
+
+        return view('danh-sach-nhan-vien.edit', ['danhSachNhanVien' => $danhSachNhanVien]);
+    }
+
+    public function update(Request $request, User $danhSachNhanVien){
+
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'mat_khau' => 'nullable',
+        ], [
+            'name.required' => "Nhập tên",
+            'email.required' => " Nhập email"
+        ]);
+
+        $danhSachNhanVien->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['mat_khau'])
+        ]);
+
+        $diemThang = $danhSachNhanVien->diemThang;
+
+        return redirect()->route('nhan-vien.show',['danhSachNhanVien' => $danhSachNhanVien,
+                                                    'diemThang' => $diemThang])
+                                                    ->with('status', "Cập nhật thành công!");
+    }
 }

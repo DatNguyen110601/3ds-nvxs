@@ -1,5 +1,6 @@
 <?php
 $list = [
+    route('home') =>'Trang chủ',
     '#'=>'Nhân viên xuất sắc',
 ];
 ?>
@@ -59,6 +60,7 @@ $list = [
                 <tbody>
                     <tr></tr>
                     <?php $key = 1; ?>
+                    @if ($data!= null)
                     @foreach ($data as $item)
 
                     <tr>
@@ -80,7 +82,12 @@ $list = [
                             <td>{{ $item['diem_thang'][$i] }}</td>
                         @endfor
                     </tr>
+
                     @endforeach
+                    @else
+                    <td colspan="15">Chưa có nhân viên xuất sắc</td>
+                    @endif
+
                 </tbody>
             </table>
         </div>

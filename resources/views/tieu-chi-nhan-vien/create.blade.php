@@ -1,5 +1,6 @@
 <?php
 $list = [
+    route('home') =>'Trang chủ',
     route('tieu-chi-nhan-vien.index') =>'Danh sách tiêu chí',
     '#' => 'Thêm tiêu chí'
 ];
@@ -54,7 +55,7 @@ $list = [
                 <label for="">Hoạt động</label>
 
                 <select name="trang_thai" id="trang_thai" class="form-control">
-                    <option value="1">Hoạt động</option>
+                    <option value="1">Bật</option>
                     <option value="0">Tắt</option>
                 </select>
 

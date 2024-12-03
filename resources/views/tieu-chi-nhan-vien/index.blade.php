@@ -1,6 +1,7 @@
 
 <?php
 $list = [
+    route('home') =>'Trang chủ',
     '#'=>'Danh sách tiêu chí',
 ];
 ?>
@@ -94,7 +95,7 @@ $list = [
                             </button>
                         @endcan
 
-                    </td>
+                </td>
                 </tr>
                 @endforeach
             </tbody>

@@ -1,5 +1,6 @@
 <?php
 $list = [
+    route('home') =>'Trang chủ',
     '#'=>'Danh sách nhân viên',
 ];
 ?>
@@ -62,13 +63,15 @@ $list = [
                                     table_eye
                                 </span>
                                 </a>
-
-                            {{-- <a href="" title=Sửa>
+                            @can('edit_nhan_vien')
+                            <a href="{{route('nhan-vien.edit', $nhanVien)}}" title=Sửa>
                                 <span class="material-symbols-outlined fs-3"  style="color: #0dcaf0;">
                                     border_color
                                 </span>
                             </a>
-                            <a href="" title="Xóa">
+                            @endcan
+
+                            {{-- <a href="" title="Xóa">
                                 <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
                                     delete
                                 </span>

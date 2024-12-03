@@ -6,6 +6,7 @@ use App\Models\DiemThang;
 use App\Models\DanhSachTieuChi;
 use App\Models\DiemTheoTieuChi;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NhanVienController;
 use App\Http\Controllers\DiemThangController;
 use App\Http\Controllers\DuyetDiemThangController;
@@ -43,8 +44,19 @@ use App\Http\Controllers\NhanVienTrongDMTNController;
 //     })->name('dashboard');
 // });
 
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::get('/', [HomeController::class])->name('home');
+// });
+
 Route::middleware('auth:sanctum')->group(function(){
-Route::get('/', [DanhMucThangNamController::class, 'home'])->name('home');
+// Route::get('/', [DanhMucThangNamController::class, 'home'])->name('home');
+    Route::get('/', [HomeController::class, '__invoke'])->name('home');
+
 Route::prefix('/danh-muc-thang-nam')->as('danh-muc-thang-nam.')->group(function() {
     Route::get('/', [DanhMucThangNamController::class, 'index'])->name('index');
     Route::get('/show/{danhMucThangNam}', [DanhMucThangNamController::class, 'show'])->name('show');
@@ -65,7 +77,9 @@ Route::prefix('/nhan-vien')->as('nhan-vien.')->group(function() {
     Route::get('/show/{danhSachNhanVien}', [NhanVienController::class, 'show'])->name('show');
     // Route::get('/create', [NhanVienController::class, 'create'])->name('create');
     // Route::post('/create/store', [NhanVienController::class, 'store'])->name('store');
-    // Route::get('/edit/{danhSachNhanVien}', [NhanVienController::class, 'edit'])->name('edit');
+    Route::get('/edit/{danhSachNhanVien}', [NhanVienController::class, 'edit'])->name('edit');
+    Route::put('/edit/{danhSachNhanVien}/update', [NhanVienController::class, 'update'])->name('update');
+
 });
 
 Route::prefix('/tieu-chi-nhan-vien')->as('tieu-chi-nhan-vien.')->group(function() {

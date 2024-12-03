@@ -57,7 +57,27 @@
                     <button>Đăng xuất</button>
                     </form>
                 </li> --}}
-            </ul>
+
+                <div class="dropdown me-3">
+                    <button class="btn btn-white dropdown-toggle" href="#" id="menu_dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="rounded-circle" style="width:24px;display:inline-block" src="{{ auth()->user()->profile_photo_url }}" alt="avatar" />
+                        {{auth()->user()->name}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="menu_dropdown">
+                        @if(auth()->user()->type == 1)
+                        <a class="dropdown-item" href="{{ route('nhan-vien.edit',['danhSachNhanVien'=>auth()->user()]) }}">Đổi mật khẩu</a>
+
+
+                        <hr class="dropdown-divider">
+                        @endif
+                    <!-- Authentication -->
+                    <form action="{{route('logout')}}" method="POST" style="padding:4px 16px;">
+                        @csrf
+                    <button>Đăng xuất</button>
+                    </form>
+
+
+                </div>
         </div>
     </header>
     <div class="w-full flex flex-row items-stretch  pb-10">
@@ -78,6 +98,12 @@
     referrerpolicy="no-referrer"
     ></script>
     @stack('scripts')
+    <script>
+        function toggleMenu() {
+            const submenu = document.getElementById('submenu');
+            submenu.classList.toggle('hidden');
+        }
+    </script>
 </body>
 
 </html>

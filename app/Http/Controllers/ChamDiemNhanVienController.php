@@ -59,7 +59,7 @@ class ChamDiemNhanVienController extends Controller
             'danhMucThangNam' => $danhMucThangNam,
             'diemThang' => $diemThang,
 
-         ])->with('status', "Chấm điểm nhân viên {$nhanVien->ho_ten} thành công!");
+         ])->with('status', "Chấm điểm nhân viên {$nhanVien->name} thành công!");
     }
 
     /**
@@ -114,5 +114,5 @@ class ChamDiemNhanVienController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    
+
 }

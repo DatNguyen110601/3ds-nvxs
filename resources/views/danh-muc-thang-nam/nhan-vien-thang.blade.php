@@ -1,5 +1,6 @@
 <?php
 $list = [
+    route('home') =>'Trang chủ',
     route('danh-muc-thang-nam.index')=>'Danh mục tháng năm',
     route('danh-muc-thang-nam.show', ['danhMucThangNam' => $danhMucThangNam,
                                     'diemThang' => $diemThang,])
@@ -15,13 +16,13 @@ $list = [
 
     <div class=" d-flex justify-content-between  mb-3 mt-4">
         <legend class="legend">Tiêu chí nhân viên tháng {{$danhMucThangNam->thang}} , {{$nhanVien->name}}</legend>
-        <div class="mb-2">
+        {{-- <div class="mb-2">
             <a href="{{route('danh-muc-thang-nam.create')}}" class="btn btn-primary">
                 <span class="material-symbols-outlined" >
                     add_task
                 </span>
                 Thêm</a>
-        </div>
+        </div> --}}
     </div>
 
     @if (session('status'))
@@ -74,13 +75,20 @@ $list = [
                     </td>
 
                     <td>
-                        {{-- <a href="">
+                        @can('add_edit_diem')
+                            <a href="{{route('cham-diem-nhan-vien.create',
+                            [
+                                'danhMucThangNam' =>$danhMucThangNam,
+                                'nhanVien' => $nhanVien,
 
-                            <span class="material-symbols-outlined fs-3"  style="color: #0d6efd;">
-                                contrast_square
+                            ])}}" title="Chấm điểm">
+
+                            <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
+                                    border_color
                             </span>
 
-                        </a> --}}
+                            </a>
+                        @endcan
                     </td>
                 </tr>
                 <tr>
