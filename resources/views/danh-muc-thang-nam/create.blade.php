@@ -25,7 +25,7 @@ $list = [
                     @csrf
                     <div class="mb-4">
                         <label for="nam" class="form-label">Năm</label>
-                        <select class="form-control form-control-lg" name="nam" id="yearSelect" required >
+                        <select class="form-control" name="nam" id="yearSelect" required >
                             <option value="" selected disabled>Chọn năm</option>
                         </select>
                         <div class="invalid-feedback" id="yearError" role="alert">

@@ -6,6 +6,7 @@ $list = [
 ];
 ?>
 
+
 <x-layout>
     <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;">
         <x-breadcrumb :list='$list' />
@@ -76,110 +77,115 @@ $list = [
             </thead>
 
 
-            @if(!empty($diemThang))
-            <tbody class="text-center">
-            @foreach ($diemThang as $key=>$value)
-                <tr>
-                    <td>{{$key + 1}}</td>
-                    <td>{{$value->nhanVien->name}}<br>
-                        <span style="color: #565555; font-size:13px;">
-                            @foreach ($value->nhanVien->viTri as $item)
-                                ({{$item->ten_vi_tri}})
-                            @endforeach
-                        </span>
-                    </td>
+            @if(count($diemThang)!=0)
 
-                        <td>
-                            @foreach ($value->nhanVien->viTri as $item)
-                                {{$item->phong_ban}}
-                            @endforeach
-                        </td>
-
-                    <td>{{$value->tong_diem}}</td>
-                    @if ($value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
-                        <td>
-                            <span class="material-symbols-outlined fs-3" style="color: #198754">
-                                check
+                <tbody class="text-center">
+                @foreach ($diemThang as $key=>$value)
+                    <tr>
+                        <td>{{$key + 1}}</td>
+                        <td>{{$value->nhanVien->name}}<br>
+                            <span style="color: #565555; font-size:13px;">
+                                @foreach ($value->nhanVien->viTri as $item)
+                                    ({{$item->ten_vi_tri}})
+                                @endforeach
                             </span>
                         </td>
-                    @else
+
+                            <td>
+                                @foreach ($value->nhanVien->viTri as $item)
+                                    {{$item->phong_ban}}
+                                @endforeach
+                            </td>
+
+                        <td>{{$value->tong_diem}}</td>
+                        @if ($value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
+                            <td>
+                                <span class="material-symbols-outlined fs-3" style="color: #198754">
+                                    check
+                                </span>
+                            </td>
+                        @else
+                            <td>
+                                <span class="material-symbols-outlined fs-3" >
+                                    more_horiz
+                                </span>
+                            </td>
+                        @endif
                         <td>
-                            <span class="material-symbols-outlined fs-3" >
-                                more_horiz
-                            </span>
-                        </td>
-                    @endif
-                    <td>
-                        <a href="{{route('danh-muc-thang-nam.xem-diem-nhan-vien-thang',
-                            ['danhMucThangNam' =>$danhMucThangNam,
-                            'nhanVien' => $value->nhanVien,
-                            ]
-                            )}}" title="Xem" >
-                            <span class="material-symbols-outlined fs-3">
-                                table_eye
-                            </span>
-                        </a>
-                        @can('add_edit_diem')
-                        <a href="{{route('cham-diem-nhan-vien.create',
-                        [
-                            'danhMucThangNam' =>$danhMucThangNam,
-                            'nhanVien' => $value->nhanVien,
+                            <a href="{{route('danh-muc-thang-nam.xem-diem-nhan-vien-thang',
+                                ['danhMucThangNam' =>$danhMucThangNam,
+                                'nhanVien' => $value->nhanVien,
+                                ]
+                                )}}" title="Xem" >
+                                <span class="material-symbols-outlined fs-3">
+                                    table_eye
+                                </span>
+                            </a>
+                            @can('add_edit_diem')
+                            <a href="{{route('cham-diem-nhan-vien.create',
+                            [
+                                'danhMucThangNam' =>$danhMucThangNam,
+                                'nhanVien' => $value->nhanVien,
 
-                        ])}}" title="Chấm điểm">
+                            ])}}" title="Chấm điểm">
 
-                        <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
-                            border_color
-                        </span>
-
-                        </a>
-
-                        {{-- <a href="{{route('cham-diem-nhan-vien.edit',
-                        [
-                            'danhMucThangNam' =>$danhMucThangNam,
-                            'nhanVien' => $value->nhanVien,
-
-                        ])}}" title="Sửa" >
                             <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
                                 border_color
                             </span>
-                        </a> --}}
-                        @endcan
 
-                        @can('duyet_diem')
-                        @if ($value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
-
-                                <span class="material-symbols-outlined fs-3" style="color: #bbb">
-                                task_alt
-                                </span>
-
-                        @else
-                            <a href="{{route('duyet.duyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
-                                'nhanVien' =>$value->nhanVien])}}" title="Duyệt" >
-                                <span class="material-symbols-outlined fs-3" style="color: #198754">
-                                task_alt
-                                </span>
                             </a>
-                        @endif
 
-                        @endcan
-                            @can('delete_nhan_vien_trong_dmtn')
-                            <?php
-                            $urlXoa = route('nhan-vien-trong-dmtn.delete', ['danhMucThangNam'=> $danhMucThangNam,
-                                                                            'diemThang' => $value]);
-                            ?>
-                            <button type="button" class=" text-red-600 " onclick="xoaThongTin('{{$urlXoa}}')">
-                                <span class="material-symbols-outlined fs-3">
-                                    delete
+                            {{-- <a href="{{route('cham-diem-nhan-vien.edit',
+                            [
+                                'danhMucThangNam' =>$danhMucThangNam,
+                                'nhanVien' => $value->nhanVien,
+
+                            ])}}" title="Sửa" >
+                                <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
+                                    border_color
                                 </span>
-                            </button>
+                            </a> --}}
+                            @endcan
 
-                        @endcan
+                            @can('duyet_diem')
+                            @if ($value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
 
-                    </td>
+                                    <span class="material-symbols-outlined fs-3" style="color: #bbb">
+                                    task_alt
+                                    </span>
+
+                            @else
+                                <a href="{{route('duyet.duyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
+                                    'nhanVien' =>$value->nhanVien])}}" title="Duyệt" >
+                                    <span class="material-symbols-outlined fs-3" style="color: #198754">
+                                    task_alt
+                                    </span>
+                                </a>
+                            @endif
+
+                            @endcan
+                            @can('delete_nhan_vien_trong_dmtn')
+                                <?php
+                                $urlXoa = route('nhan-vien-trong-dmtn.delete', ['danhMucThangNam'=> $danhMucThangNam,
+                                                                                'diemThang' => $value]);
+                                ?>
+                                <button type="button" class=" text-red-600 " onclick="xoaThongTin('{{$urlXoa}}')">
+                                    <span class="material-symbols-outlined fs-3">
+                                        delete
+                                    </span>
+                                </button>
+
+                            @endcan
+
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="6" class="text-center" style="color: #d9534f;">Chưa có thông tin tiêu chí nhân viên</td>
                 </tr>
-            @endforeach
-            </tbody>
-        @endif
+                </tbody>
+            @endif
 
         </table>
     </div>

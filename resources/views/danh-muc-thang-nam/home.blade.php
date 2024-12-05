@@ -1,14 +1,23 @@
 <?php
 $list = [
     '/' => "Trang chủ",
-    route('danh-muc-thang-nam.index')=>'Danh mục tháng năm',
-    '#' => "Nhân viên năm {$nam}/ tháng {$thang}"
+
 ];
 ?>
 <style>
     .btn-info{
         background: #31d2f2 !important;
     }
+    .alert-message {
+    background-color: #ffdddd;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+    border-radius: 5px;
+    padding: 15px 15px;
+    margin-top: 30px;
+    text-align: center;
+}
+
 </style>
 
 <x-layout>
@@ -37,8 +46,16 @@ $list = [
     </div>
 
 
+
+    @php
+        $hasDiemThang = false; // Biến kiểm tra nếu có bất kỳ danh mục nào có diemThang khác 0
+    @endphp
     @foreach ($danhMucThangNam as $danhMuc)
     @if (count($danhMuc->diemThang) !=0)
+
+    @php
+        $hasDiemThang = true;
+    @endphp
 
         <div class=" d-flex justify-content-between mb-3 mt-4">
 
@@ -49,7 +66,7 @@ $list = [
             </legend>
 
             @if ($danhMuc!= null)
-            @can('duyet_diem')
+            {{-- @can('duyet_diem') --}}
 
                 <div class="mb-2">
                     <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMuc])}}" class="btn btn-success" title="Duyệt">
@@ -59,9 +76,9 @@ $list = [
                         Duyệt</a>
                 </div>
 
-            @endcan
+            {{-- @endcan --}}
 
-            @can('export_excel')
+            {{-- @can('export_excel') --}}
             <div class="mb-2 ml-2">
 
                 <a href="{{route('danh-muc-thang-nam.exportExcel', ['danhMucThangNam' => $danhMuc])}}" class="btn btn-info" title="Tải file excel"
@@ -72,9 +89,9 @@ $list = [
                     Tải file excel</a>
 
             </div>
-            @endcan
+            {{-- @endcan --}}
 
-            @can('add_danh_muc_thang_nam')
+            {{-- @can('add_danh_muc_thang_nam') --}}
             <div class="mb-2 ml-2">
                 <a href="{{route('nhan-vien-trong-dmtn.create', ['danhMucThangNam' =>$danhMuc])}}" class="btn btn-primary">
                     <span class="material-symbols-outlined" >
@@ -83,7 +100,9 @@ $list = [
                     Thêm</a>
 
             </div>
-            @endcan
+            {{-- @endcan --}}
+
+
             @endif
         </div>
 
@@ -219,6 +238,12 @@ $list = [
     @endif
     @endforeach
 
+    @if (!$hasDiemThang)
+        <div class=" alert-message">
+
+            Không tìm thấy tiêu chí nhân viên
+        </div>
+    @endif
 
     <form action="" method="POST" class="col-6" id="frm_xoa_thong_tin">
         @method('DELETE')
@@ -239,4 +264,5 @@ $list = [
         }
     </script>
 @endpush
+
 </x-layout>

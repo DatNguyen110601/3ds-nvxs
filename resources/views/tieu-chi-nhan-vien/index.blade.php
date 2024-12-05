@@ -53,51 +53,59 @@ $list = [
             </thead>
 
             <tbody class="text-center">
-                @foreach ($dsTieuChi as $key => $tieuChi)
+                @if (count($dsTieuChi)!=0)
+                    @foreach ($dsTieuChi as $key => $tieuChi)
 
-                <tr>
-                    <td>{{$key +1}}</td>
-                    <td>{{$tieuChi->ten_tieu_chi}}</td>
-                    <td>{{$tieuChi->diem_toi_thieu}}</td>
-                    <td>{{$tieuChi->diem_toi_da}}</td>
-                    <td>{{$tieuChi->he_so}}</td>
-                    {{-- <td>{{$tieuChi::$dsTrangThai[$tieuChi->trang_thai]}}</td> --}}
-                    <td>
-                        @if ($tieuChi->trang_thai == 1)
-                            <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;" title="Hoạt động">
-                                toggle_on
+                    <tr>
+                        <td>{{$key +1}}</td>
+                        <td>{{$tieuChi->ten_tieu_chi}}</td>
+                        <td>{{$tieuChi->diem_toi_thieu}}</td>
+                        <td>{{$tieuChi->diem_toi_da}}</td>
+                        <td>{{$tieuChi->he_so}}</td>
+                        {{-- <td>{{$tieuChi::$dsTrangThai[$tieuChi->trang_thai]}}</td> --}}
+                        <td>
+                            @if ($tieuChi->trang_thai == 1)
+                                <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;" title="Hoạt động">
+                                    toggle_on
+                                </span>
+                            @else
+                            <span class="material-symbols-outlined fs-3" title="Tắt">
+                                toggle_off
                             </span>
-                        @else
-                        <span class="material-symbols-outlined fs-3" title="Tắt">
-                            toggle_off
-                        </span>
-                        @endif
+                            @endif
+
+                        </td>
+                        <td>
+                            @can('edit_danh_sach_tieu_chi')
+                                <a href="{{route('tieu-chi-nhan-vien.edit', $tieuChi)}}">
+                                    <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;" title="Sửa">
+                                        border_color
+                                    </span>
+                                </a>
+                            @endcan
+                            @can('delete_danh_sach_tieu_chi')
+                                <?php
+
+                                $url = route('tieu-chi-nhan-vien.delete', ['danhSachTieuChi' => $tieuChi]);
+
+                                ?>
+                                <button type="button" onclick="xoaTieuChi('{{$url}}')">
+                                    <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
+                                        delete
+                                    </span>
+                                </button>
+                            @endcan
 
                     </td>
-                    <td>
-                        @can('edit_danh_sach_tieu_chi')
-                            <a href="{{route('tieu-chi-nhan-vien.edit', $tieuChi)}}">
-                                <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;" title="Sửa">
-                                    border_color
-                                </span>
-                            </a>
-                        @endcan
-                        @can('delete_danh_sach_tieu_chi')
-                            <?php
+                    </tr>
+                    @endforeach
 
-                            $url = route('tieu-chi-nhan-vien.delete', ['danhSachTieuChi' => $tieuChi]);
-
-                            ?>
-                            <button type="button" onclick="xoaTieuChi('{{$url}}')">
-                                <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
-                                    delete
-                                </span>
-                            </button>
-                        @endcan
-
-                </td>
+                @else
+                <tr>
+                    <td colspan="7" style="color: #d9534f;">Chưa có tiêu chí nào</td>
                 </tr>
-                @endforeach
+                @endif
+
             </tbody>
 
 

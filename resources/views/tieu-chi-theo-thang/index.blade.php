@@ -51,8 +51,18 @@ $list = [
                     </tr>
                 </thead>
                 <tbody class="text-center">
+
+                    @php
+                        $hasDiemThang = false;
+                    @endphp
+
                     @foreach ($danhMucThangNam as $key =>$danhMuc)
                     @if (count($danhMuc->dsTieuChiThang) != 0)
+
+                        @php
+                            $hasDiemThang = true;
+                        @endphp
+                        
                     <tr>
                         <td>{{$key +1}}</td>
                         <td>{{$danhMuc->nam}}</td>
@@ -78,9 +88,17 @@ $list = [
 
                         </td>
                     </tr>
-                    @endif
 
+
+
+                    @endif
                     @endforeach
+                    @if (!$hasDiemThang)
+                    <tr>
+                        <td colspan="5" style="color: #d9534f;">Không tìm thấy tiêu chí nhân viên</td>
+                    </tr>
+
+                @endif
 
                 </tbody>
             </table>

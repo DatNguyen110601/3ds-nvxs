@@ -43,32 +43,37 @@ $list = [
             </thead>
             <tbody class="text-center">
 
+            @if(count($diemThang)!=0)
                 @foreach ($diemThang as $diem)
-                <tr>
-                    <td>{{$diem->danhMucThangNam->nam}}</td>
-                    <td>{{$diem->danhMucThangNam->thang}}</td>
-                    <td>{{$diem->tong_diem}}</td>
-                    <td>
-                        <a href="{{route('diem-thang.show', ['nhanVien' =>$danhSachNhanVien,
-                                                            'diemThang' => $diem])}}" title="Xem" >
-                            <span class="material-symbols-outlined fs-3">
-                                table_eye
-                            </span>
-                        </a>
-                        {{-- <a href="" title=Sửa>
-                            <span class="material-symbols-outlined fs-3"  style="color: #0dcaf0;">
-                                border_color
-                            </span>
-                        </a>
-                        <a href="" title="Xóa">
-                            <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
-                                delete
-                            </span>
-                        </a> --}}
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{$diem->danhMucThangNam->nam}}</td>
+                        <td>{{$diem->danhMucThangNam->thang}}</td>
+                        <td>{{$diem->tong_diem}}</td>
+                        <td>
+                            <a href="{{route('diem-thang.show', ['nhanVien' =>$danhSachNhanVien,
+                                                                'diemThang' => $diem])}}" title="Xem" >
+                                <span class="material-symbols-outlined fs-3">
+                                    table_eye
+                                </span>
+                            </a>
+                            {{-- <a href="" title=Sửa>
+                                <span class="material-symbols-outlined fs-3"  style="color: #0dcaf0;">
+                                    border_color
+                                </span>
+                            </a>
+                            <a href="" title="Xóa">
+                                <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
+                                    delete
+                                </span>
+                            </a> --}}
+                        </td>
+                    </tr>
                 @endforeach
-
+            @else
+            <tr>
+                <td colspan="4" style="color: #d9534f;">Chưa có thông tin</td>
+            </tr>
+            @endif
 
             </tbody>
         </table>
