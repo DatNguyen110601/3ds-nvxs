@@ -102,7 +102,7 @@ $list = [
 
                 @else
                 <tr>
-                    <td colspan="7" style="color: #d9534f;">Chưa có tiêu chí nào</td>
+                    <td colspan="7"  style="background:darkgray;">Chưa có tiêu chí nào</td>
                 </tr>
                 @endif
 

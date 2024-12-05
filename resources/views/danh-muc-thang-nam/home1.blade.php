@@ -9,13 +9,13 @@ $list = [
         background: #31d2f2 !important;
     }
     .alert-message {
-    background-color: #ffdddd;
-    color: #d9534f;
-    border: 1px solid #d9534f;
+    background-color: darkgray;
+    border: 1px solid #f8f9fa;
     border-radius: 5px;
     padding: 15px 15px;
     margin-top: 30px;
     text-align: center;
+    font-size: 18px;
 }
 .selectize-input {
     padding: 11px !important;
@@ -44,7 +44,7 @@ $list = [
                     <div class="col-auto" >
 
                         <select id="id_nhan_vien" name="id_nhan_vien">
-                            <option value=""></option>
+                            <option value="0">Tất cả nhân viên</option>
                             @foreach ($dsNhanVien as $nhanVien)
 
                                 <option value="{{$nhanVien->id}}" {{ $idNhanVien == $nhanVien->id ? 'selected' : '' }}>@foreach ($nhanVien->viTri as $viTri)
@@ -275,9 +275,9 @@ $list = [
     @endforeach
 
     @if (!$hasDiemThang)
-        <div class=" alert-message">
+        <div class="" style="font-size: 20px;">
 
-            Không tìm thấy tiêu chí nhân viên
+            Không tìm thấy thông tin
         </div>
     @endif
 

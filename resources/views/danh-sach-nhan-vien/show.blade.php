@@ -71,7 +71,7 @@ $list = [
                 @endforeach
             @else
             <tr>
-                <td colspan="4" style="color: #d9534f;">Chưa có thông tin</td>
+                <td colspan="4"  style="background:darkgray;">Chưa có thông tin</td>
             </tr>
             @endif
 

@@ -62,7 +62,7 @@ $list = [
                         @php
                             $hasDiemThang = true;
                         @endphp
-                        
+
                     <tr>
                         <td>{{$key +1}}</td>
                         <td>{{$danhMuc->nam}}</td>
@@ -95,7 +95,7 @@ $list = [
                     @endforeach
                     @if (!$hasDiemThang)
                     <tr>
-                        <td colspan="5" style="color: #d9534f;">Không tìm thấy tiêu chí nhân viên</td>
+                        <td colspan="5"  style="background:darkgray;">Không tìm thấy tiêu chí nhân viên</td>
                     </tr>
 
                 @endif

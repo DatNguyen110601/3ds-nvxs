@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NhanVienController;
 use App\Http\Controllers\DiemThangController;
+use App\Http\Controllers\DefaultRoleController;
 use App\Http\Controllers\DuyetDiemThangController;
 use App\Http\Controllers\DanhMucThangNamController;
 use App\Http\Controllers\DanhSachTieuChiController;
@@ -54,8 +55,9 @@ use App\Http\Controllers\NhanVienTrongDMTNController;
 // });
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::get('/default-roles',DefaultRoleController::class);
 // Route::get('/', [DanhMucThangNamController::class, 'home'])->name('home');
-    Route::get('/', [HomeController::class, '__invoke'])->name('home');
+    Route::get('/', HomeController::class)->name('home');
 
 Route::prefix('/danh-muc-thang-nam')->as('danh-muc-thang-nam.')->group(function() {
     Route::get('/', [DanhMucThangNamController::class, 'index'])->name('index');

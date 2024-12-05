@@ -69,7 +69,7 @@ class HomeController extends Controller
         $nam = $request->input('year', date('Y'));
         $thang = $request->input('month', date('n'));
         $idNhanVien = $request->input('id_nhan_vien');
-
+        $idNhanVien = $idNhanVien == "0" ? null : $idNhanVien;
         $danhMucThangNam = DanhMucThangNam::all();
         // $nam = 2024;
         // $thang = null;

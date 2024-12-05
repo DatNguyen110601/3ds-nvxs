@@ -47,7 +47,7 @@
         <div>
         <a href="{{route('home')}}">
 
-            <img src="https://drive.3d-smartsolutions.com/tai-ve/b72e42a891a41a9e90bc6514e8d9ccf998e345390caef837f447c9e37ce0ac9b" class="w-60"/>
+            <img src="https://drive.3d-smartsolutions.com/tai-ve/b5b2304acc44020e6af508065452a7c02b5e0853dd357cb300a6e0d3a0a58b1e" class="w-60"/>
         </a>
         </div>
         <div>

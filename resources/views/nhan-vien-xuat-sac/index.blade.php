@@ -85,7 +85,7 @@ $list = [
 
                     @endforeach
                     @else
-                    <td colspan="15" style="color:#d9534f;">Chưa có nhân viên xuất sắc</td>
+                    <td colspan="15" style="background:darkgray;">Chưa có nhân viên xuất sắc</td>
                     @endif
 
                 </tbody>

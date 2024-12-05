@@ -182,7 +182,7 @@ $list = [
                 @endforeach
             @else
                 <tr>
-                    <td colspan="6" class="text-center" style="color: #d9534f;">Chưa có thông tin tiêu chí nhân viên</td>
+                    <td colspan="6" class="text-center"  style="background:darkgray;">Chưa có thông tin tiêu chí nhân viên</td>
                 </tr>
                 </tbody>
             @endif
