@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "@selectize/selectize": "^0.15.2",
-        "chart.js": "^4.4.2"
+        "chart.js": "^4.4.2",
+        "ngrok": "^5.0.0-beta.2"
     }
 }

@@ -48,7 +48,15 @@ $list = [
                     <tr>
                         <td>{{$diem->danhMucThangNam->nam}}</td>
                         <td>{{$diem->danhMucThangNam->thang}}</td>
-                        <td>{{$diem->tong_diem}}</td>
+
+                        <td>
+                            @if ($diem->tong_diem == 0)
+                                Chưa chấm
+                            @else
+                                {{$diem->tong_diem}}
+                            @endif
+                        </td>
+                        
                         <td>
                             <a href="{{route('diem-thang.show', ['nhanVien' =>$danhSachNhanVien,
                                                                 'diemThang' => $diem])}}" title="Xem" >

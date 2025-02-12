@@ -43,7 +43,8 @@ $list = [
             <thead class="table-light">
                 <tr>
                     <th>STT</th>
-                    <th>Tên tiêu chí</th>
+                    <th style="min-width:200px;">Tên tiêu chí</th>
+                    <th style="width:500px;">Mô tả</th>
                     <th>Điểm tối thiểu</th>
                     <th>Điểm tối đa</th>
                     <th>Hệ số</th>
@@ -59,6 +60,8 @@ $list = [
                     <tr>
                         <td>{{$key +1}}</td>
                         <td>{{$tieuChi->ten_tieu_chi}}</td>
+                        <td>{{$tieuChi->mo_ta}}</td>
+
                         <td>{{$tieuChi->diem_toi_thieu}}</td>
                         <td>{{$tieuChi->diem_toi_da}}</td>
                         <td>{{$tieuChi->he_so}}</td>

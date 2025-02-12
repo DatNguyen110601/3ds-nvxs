@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\DiemThang;
+use App\Models\LichSuDiemThang;
 use App\Models\TieuChiTheoThang;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,6 +37,11 @@ class DanhMucThangNam extends Model
     public function diemThang(): HasMany
     {
         return $this->hasMany(DiemThang::class, 'id_thang_nam', 'id');
+    }
+
+    public function lichSuDiemThang(): HasMany
+    {
+        return $this->hasMany(LichSuDiemThang::class, 'id_thang_nam', 'id');
     }
 
 }

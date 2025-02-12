@@ -39,6 +39,13 @@ $list = [
                     {{ $message }}
                 </p>
             @enderror
+
+            <div class="form-group mb-3">
+                <label for="" >Mô tả (nếu có)</label>
+                <textarea type="text" name="mo_ta" class="form-control" placeholder="Tên tiêu chí"
+                rows="4" cols="50">{{ old('mo_ta', $danhSachTieuChi->mo_ta) }}</textarea>
+            </div>
+
             <div class="form-group mb-3">
                 <label for="" >Điểm tối thiểu</label>
                 <input type="number" name="diem_toi_thieu" id="diem_toi_thieu" value="{{old('diem_toi_thieu' ,$danhSachTieuChi->diem_toi_thieu)}}" class="form-control" placeholder="Điểm tối thiểu"/>

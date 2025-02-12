@@ -69,7 +69,12 @@ Route::prefix('/danh-muc-thang-nam')->as('danh-muc-thang-nam.')->group(function(
     Route::delete('/{danhMucThangNam}/delete', [DanhMucThangNamController::class, 'destroy'])->name('delete');
 // // xem chi tiết điểm nhân viên theo tháng
     Route::get('/show/{danhMucThangNam}/nhan-vien/{nhanVien}/', [DanhMucThangNamController::class, 'xemDiemNhanVienThang'])->name('xem-diem-nhan-vien-thang');
-// xuất file excel
+
+    //xem lịch sử
+    Route::get('/show/{danhMucThangNam}/nhan-vien/{nhanVien}/lich-su', [DanhMucThangNamController::class, 'xemLichSu'])->name('xem-lich-su');
+
+
+    // xuất file excel
     Route::get('/danh-muc-thang-nam/{danhMucThangNam}/xuat-file-excel', [DanhMucThangNamController::class, 'exportExcel'])->name('exportExcel');
 
 });
@@ -110,8 +115,6 @@ Route::prefix('/tieu-chi-theo-thang')->as('tieu-chi-theo-thang.')->group(functio
     Route::get('{danhMucThangNam}/edit/nam-thang/{id_thang_nam}/tieu-chi/{id_tieu_chi}', [TieuChiTheoThangController::class, 'suaTieuChiThang'])->name('sua-tieu-chi-thang');
     Route::put('{danhMucThangNam}/edit/nam-thang/{id_thang_nam}/tieu-chi/{id_tieu_chi}/update', [TieuChiTheoThangController::class, 'updateTieuChiThang'])->name('update-tieu-chi-thang');
 
-
-
 });
 
 Route::get('/diem-theo-tieu-chi', [DiemTheoTieuChiController::class, 'index'])->name('diem-theo-tieu-chi.index');
@@ -123,6 +126,10 @@ Route::post('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/{nhanVien}/{diemTha
 Route::get('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/{nhanVien}/cham-diem', [ChamDiemNhanVienController::class, 'create'])->name('cham-diem-nhan-vien.create');
 Route::post('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/{nhanVien}/diem-theo-tieu-chi/store/{diemThang}', [ChamDiemNhanVienController::class, 'store'])->name('cham-diem-nhan-vien.store');
 Route::get('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/{nhanVien}/sua-diem', [ChamDiemNhanVienController::class, 'edit'])->name('cham-diem-nhan-vien.edit');
+Route::post('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/{nhanVien}/diem-theo-tieu-chi/update/{diemThang}', [ChamDiemNhanVienController::class, 'update'])->name('cham-diem-nhan-vien.update');
+
+// Route::post('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/{nhanVien}/sua-diem/update', [ChamDiemNhanVienController::class, 'update'])->name('cham-diem-nhan-vien.update');
+
 
 
 // nhân viên-> điểm tháng
@@ -132,6 +139,7 @@ Route::prefix('/diem-thang')->as('diem-thang.')->group(function() {
 });
 Route::get('/danh-muc-thang-nam/{danhMucThangNam}/duyet-tat-ca', [DuyetDiemThangController::class, 'duyetDiemThangAll'])->name('duyet.duyetDiemThangAll');
 Route::get('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/{nhanVien}/duyet', [DuyetDiemThangController::class, 'duyetDiemThang'])->name('duyet.duyetDiemThang');
+Route::get('/danh-muc-thang-nam/{danhMucThangNam}/nhan-vien/{nhanVien}/huy-duyet', [DuyetDiemThangController::class, 'removeDuyetDiemThang'])->name('duyet.removeDuyetDiemThang');
 
 //nhân viên xuất sắc
 Route::prefix('/nhan-vien-xuat-sac')->as('nhan-vien-xuat-sac.')->group(function() {

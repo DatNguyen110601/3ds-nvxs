@@ -75,6 +75,7 @@ $list = [
                     </td>
 
                     <td>
+                        <?php /*
                         @can('add_edit_diem')
                             <a href="{{route('cham-diem-nhan-vien.create',
                             [
@@ -89,6 +90,56 @@ $list = [
 
                             </a>
                         @endcan
+                        */?>
+
+                        @can('add_edit_diem')
+
+                        @if ($diemThang->tong_diem == 0)
+
+                            <a href="{{route('cham-diem-nhan-vien.create',
+                            [
+                                'danhMucThangNam' =>$danhMucThangNam,
+                                'nhanVien' => $diemThang->nhanVien,
+
+                            ])}}" title="Chấm điểm"
+                            style="{{ $diemThang->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 0) ? '' : 'pointer-events: none; opacity: 0.5;' }}"
+                            >
+                            <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
+                                border_color
+                            </span>
+
+                            </a>
+                        @else
+                            <a href="{{route('cham-diem-nhan-vien.edit',
+                            [
+                                'danhMucThangNam' =>$danhMucThangNam,
+                                'nhanVien' => $diemThang->nhanVien,
+
+                            ])}}" title="Chấm điểm"
+                            style="{{ $diemThang->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 0) ? '' : 'pointer-events: none; opacity: 0.5;' }}"
+                            >
+
+                            <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
+                                border_color
+                            </span>
+
+                            </a>
+                        @endif
+
+                        @endcan
+
+                        <a href="{{route('danh-muc-thang-nam.xem-lich-su',
+                                        [
+                                            'danhMucThangNam' =>$danhMucThangNam,
+                                            'nhanVien' => $nhanVien,
+
+                                        ])}}" title="Xem lịch sử">
+
+                                        <span class="material-symbols-outlined fs-3">
+                                            history
+                                        </span>
+
+                        </a>
                     </td>
                 </tr>
                 <tr>

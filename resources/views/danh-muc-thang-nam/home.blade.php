@@ -182,18 +182,23 @@ $list = [
                                 </span>
                             </a>
                             @can('add_edit_diem')
-                            <a href="{{route('cham-diem-nhan-vien.create',
-                            [
-                                'danhMucThangNam' =>$danhMuc,
-                                'nhanVien' => $value->nhanVien,
+                            @if ({{$value->tong_diem}} == 0)
+                                <a href="{{route('cham-diem-nhan-vien.create',
+                                [
+                                    'danhMucThangNam' =>$danhMuc,
+                                    'nhanVien' => $value->nhanVien,
 
-                            ])}}" title="Chấm điểm">
+                                ])}}" title="Chấm điểm">
 
-                            <span class="material-symbols-outlined fs-3"  style="color: #0d6efd;">
-                                contrast_square
-                            </span>
+                                <span class="material-symbols-outlined fs-3"  style="color: #0d6efd;">
+                                    contrast_square
+                                </span>
 
-                            </a>
+                                </a>
+                            @else
+
+                            @endif
+
 
 
                             @endcan

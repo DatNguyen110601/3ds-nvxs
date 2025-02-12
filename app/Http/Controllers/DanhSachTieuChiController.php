@@ -23,7 +23,8 @@ class DanhSachTieuChiController extends Controller
             "diem_toi_da" => 'required',
             "diem_toi_thieu" => 'required',
             "he_so" => 'required',
-            "trang_thai" => 'nullable'
+            "trang_thai" => 'nullable',
+            "mo_ta" => 'nullable'
         ],[
             "ten_tieu_chi" => 'Nhập tên tiêu chí',
             "diem_toi_da" => 'Nhập điểm tối đa',
@@ -47,7 +48,7 @@ class DanhSachTieuChiController extends Controller
     }
 
     public function edit( DanhSachTieuChi $danhSachTieuChi){
-
+        // dd($danhSachTieuChi);
         return view('tieu-chi-nhan-vien.edit', ['danhSachTieuChi' => $danhSachTieuChi]);
     }
 

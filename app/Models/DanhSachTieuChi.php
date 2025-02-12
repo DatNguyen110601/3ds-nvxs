@@ -11,7 +11,7 @@ class DanhSachTieuChi extends Model
 {
     use HasFactory;
     public $table = 'nvxs___danh_sach_tieu_chis';
-    public $fillable = ['ten_tieu_chi', 'diem_toi_da', 'diem_toi_thieu','he_so','trang_thai'];
+    public $fillable = ['ten_tieu_chi', 'diem_toi_da', 'diem_toi_thieu','he_so','trang_thai','mo_ta'];
     public $timestamps = false;
 
 

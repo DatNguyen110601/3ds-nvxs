@@ -36,9 +36,12 @@ trait DiemThangTraits {
 
     public function tinhTongDiem($diemThang){
         $diemTheoTieuChi = $diemThang->diemTheoTieuChi;
-
+        // dd($diemTheoTieuChi);
         // Sum all values in the $diemTheoTieuChi array
-        $tongDiem = $diemTheoTieuChi->sum('diem');
+        $tongDiem = 0;
+        foreach($diemTheoTieuChi as $diem){
+            $tongDiem += (float) $diem->diem * (float) $diem->tenTieuChi->he_so;
+        }
         $diemThang->update(['tong_diem' => $tongDiem]);
         return $tongDiem;
     }

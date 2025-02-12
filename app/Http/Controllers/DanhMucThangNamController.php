@@ -118,7 +118,7 @@ class DanhMucThangNamController extends Controller
 
     public function show(DanhMucThangNam $danhMucThangNam){
         $diemThang = $danhMucThangNam->diemThang;
-
+        // dd($diemThang);
         return view('danh-muc-thang-nam.show', [
             'danhMucThangNam' => $danhMucThangNam,
             'diemThang' => $diemThang,
@@ -200,5 +200,20 @@ class DanhMucThangNamController extends Controller
     //     })->download('xlsx');
     // }
 
+
+    public function xemLichSu(DanhMucThangNam $danhMucThangNam, User $nhanVien){
+        $diemThangs = $danhMucThangNam->diemThang;
+        $diemThang = $diemThangs->where('id_nhan_vien', $nhanVien->id)->first();
+
+
+        $lichSuDiemThangs = $danhMucThangNam->lichSuDiemThang;
+        $lichSuDiemThang = $lichSuDiemThangs->where('id_nhan_vien', $nhanVien->id)->sortByDesc('created_at');
+        // dd($lichSuDiemThang);
+        return view('lich-su-diem.show', ['danhMucThangNam' => $danhMucThangNam,
+                                                            'nhanVien' => $nhanVien,
+                                                            'diemThang' => $diemThang,
+                                                            'lichSuDiemThang' => $lichSuDiemThang
+                                                        ]);
+    }
 
 }

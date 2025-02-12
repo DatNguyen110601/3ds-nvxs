@@ -92,6 +92,9 @@ $list = [
 @push('scripts')
 
 <script>
+
+
+
     document.addEventListener("DOMContentLoaded", () => {
         const yearSelect = document.getElementById("yearSelect");
         const currentYear = new Date().getFullYear();

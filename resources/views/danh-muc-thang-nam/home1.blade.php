@@ -188,7 +188,15 @@ $list = [
                                     {{$item->phong_ban}}
                                 @endforeach
                             </td>
-                            <td>{{$value['diemThang']->tong_diem}}</td>
+                            <td>
+                                @if ($value['diemThang']->tong_diem == 0)
+                                    <span style="color: #333333">Chưa chấm</span>
+                                @else
+                                        {{$value['diemThang']->tong_diem}}
+                                @endif
+
+
+                            </td>
                             @if ($value['diemThang']->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
                                 <td>
                                     <span class="material-symbols-outlined fs-3" style="color: #198754">
@@ -213,33 +221,58 @@ $list = [
                                     </span>
                                 </a>
                                 @can('add_edit_diem')
-                                <a href="{{route('cham-diem-nhan-vien.create',
-                                [
-                                    'danhMucThangNam' =>$danhMuc,
-                                    'nhanVien' => $value['diemThang']->nhanVien,
+                                {{-- @if($value['diemThang']->duyet == 1) --}}
+                                    @if ($value['diemThang']->tong_diem == 0)
+                                        <a href="{{route('cham-diem-nhan-vien.create',
+                                        [
+                                            'danhMucThangNam' =>$danhMuc,
+                                            'nhanVien' => $value['diemThang']->nhanVien,
 
-                                ])}}" title="Chấm điểm">
+                                        ])}}" title="Chấm điểm"
+                                        style="{{ $value['diemThang']->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 0) ? '' : 'pointer-events: none; opacity: 0.5;' }}"
+                                        >
+                                        <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
+                                            border_color
+                                        </span>
 
-                                <span class="material-symbols-outlined fs-3"  style="color: #0d6efd;">
-                                    contrast_square
-                                </span>
+                                        </a>
+                                    @else
+                                        <a href="{{route('cham-diem-nhan-vien.edit',
+                                        [
+                                            'danhMucThangNam' =>$danhMuc,
+                                            'nhanVien' => $value['diemThang']->nhanVien,
 
-                                </a>
+                                        ])}}" title="Chấm điểm"
+                                        style="{{ $value['diemThang']->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 0) ? '' : 'pointer-events: none; opacity: 0.5;' }}"
+                                        >
+
+                                        <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
+                                            border_color
+                                        </span>
+
+                                        </a>
+                                    @endif
+                                {{-- @endif --}}
+
+
 
 
                                 @endcan
 
                                 @can('duyet_diem')
                                 @if ($value['diemThang']->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
-
-                                        <span class="material-symbols-outlined fs-3" style="color: #bbb">
-                                        task_alt
-                                        </span>
-
+                                        <a href="{{route('duyet.removeDuyetDiemThang', ['danhMucThangNam' => $danhMuc,
+                                        'nhanVien' =>$value['diemThang']->nhanVien])}}" title="Bỏ duyệt"
+                                        onclick="return confirmAction(event, 'Bạn có chắc chắn muốn BỎ DUYỆT?')">
+                                            <span class="material-symbols-outlined fs-3" style="color: #bbb">
+                                            task_alt
+                                            </span>
+                                        </a>
                                 @else
 
                                     <a href="{{route('duyet.duyetDiemThang', ['danhMucThangNam' => $danhMuc,
-                                        'nhanVien' =>$value['diemThang']->nhanVien])}}" title="Duyệt" >
+                                        'nhanVien' =>$value['diemThang']->nhanVien])}}" title="Duyệt"
+                                        onclick="return confirmAction(event, 'Bạn có chắc chắn muốn DUYỆT?')">
                                         <span class="material-symbols-outlined fs-3" style="color: #198754">
                                         task_alt
                                         </span>
@@ -298,6 +331,15 @@ $list = [
     </script>
 
     <script type="text/javascript">
+
+        //duyệt
+        function confirmAction(event, message) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+            if (confirm(message)) {
+                window.location.href = event.currentTarget.href; // Điều hướng nếu người dùng xác nhận
+            }
+        }
+
         function xoaThongTin(url) {
 
             if (!confirm(`Bạn muốn xóa nhân viên này?`)) {
