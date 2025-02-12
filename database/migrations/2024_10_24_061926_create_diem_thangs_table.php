@@ -20,13 +20,17 @@ return new class extends Migration
             $table->foreign('id_thang_nam')
                 ->on('nvxs___danh_muc_thang_nams')
                 ->references('id')
-                ->cascadeOnDelete()
+                // ->cascadeOnDelete()
+                ->onDelete('cascade')
+
                 ->cascadeOnUpdate();
 
             $table->foreign('id_nhan_vien')
                 ->on('users')
                 ->references('id')
-                ->cascadeOnDelete()
+                // ->cascadeOnDelete()
+                ->onDelete('cascade')
+
                 ->cascadeOnUpdate();
         });
     }

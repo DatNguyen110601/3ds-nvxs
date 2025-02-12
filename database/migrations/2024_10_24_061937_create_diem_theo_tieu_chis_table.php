@@ -23,6 +23,8 @@ return new class extends Migration
                 ->on('nvxs___danh_sach_tieu_chis')
                 ->references('id')
                 ->cascadeOnDelete()
+                // ->onDelete('cascade')
+
                 ->cascadeOnUpdate();
 
             $table->foreign('id_nguoi_cham')
@@ -35,6 +37,7 @@ return new class extends Migration
                 ->on('nvxs___diem_thangs')
                 ->references('id')
                 ->cascadeOnDelete()
+
                 ->cascadeOnUpdate();
             // $table->timestamps();
         });
