@@ -216,4 +216,30 @@ class DanhMucThangNamController extends Controller
                                                         ]);
     }
 
+    public function bieuDoDanhMucThangNam(DanhMucThangNam $danhMucThangNam){
+        $diemThangs = $danhMucThangNam->diemThang()->get();
+
+        $data = $diemThangs->map(function ($diemThang) {
+            $chiTietTieuChi = $diemThang->diemTheoTieuChi->map(function ($diemTieuChi) {
+                return [
+                    'tieu_chi' => $diemTieuChi->tenTieuChi->ten_tieu_chi ?? null,
+                    'diem'     => $diemTieuChi->diem * $diemTieuChi->tenTieuChi->he_so,
+                ];
+            })->toArray();;
+
+            return [
+                'nhan_vien'         => $diemThang->nhanVien->name ?? null,
+                'tong_diem'         => $diemThang->tong_diem,
+                'chi_tiet_tieu_chi' => $chiTietTieuChi,
+            ];
+        });
+
+        // return response()->json($data);
+        return view('danh-muc-thang-nam.bieu-do',[
+                        'data'=>$data,
+                        'danhMucThangNam' => $danhMucThangNam
+                    ]
+                );
+    }
+
 }

@@ -39,9 +39,7 @@ class NhanVienXuatSacController extends Controller
             ];
         });
         $data = $data->sortByDesc('tong_diem');
-
-
-
+        
         // Lấy điểm cao nhất (top 1) và điểm thứ hai (top 2)
         $top1 = $data->first(); // Người có điểm cao nhất
 

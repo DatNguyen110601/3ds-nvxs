@@ -9,6 +9,7 @@ $list = [
         background: #31d2f2 !important;
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <x-layout>
     <div class="flex items-center justify-between border-b py-2  breadcrumb"  style="border-block-color: red;">
         <x-breadcrumb :list='$list' />
@@ -91,6 +92,24 @@ $list = [
                 </tbody>
             </table>
         </div>
+
+
+        {{-- biểu đồ --}}
+        {{-- <div class=" d-flex w-full">
+            <div class="bg-white w-full mt-8">
+                <h2 class="text-xl font-bold text-center mb-4">Biểu đồ thống kê</h2>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div> --}}
+        {{--  --}}
+
+        <div class=" d-flex w-full">
+            <div class="bg-white w-full mt-8">
+                <h2 class="text-xl font-bold text-center mb-4">Biểu đồ thống kê</h2>
+                <canvas id="stackedChart" width="1200" height="600"></canvas>
+
+            </div>
+        </div>
     </div>
 
 
@@ -171,6 +190,80 @@ $list = [
         const formXoa = document.getElementById('frm_xoa_thong_tin');
         formXoa.action = url;
         formXoa.submit();
+    }
+
+
+
+    const rawDataObject = @json($data); // từ Laravel truyền qua
+
+    const rawData = Object.values(rawDataObject);
+    // Lấy tên nhân viên cho trục X
+    const labels = rawData.map(item => item.nhan_vien);
+
+    // Duyệt theo từng tháng để tạo datasets
+    const datasets = [];
+
+    for (let month = 1; month <= 12; month++) {
+        const dataForMonth = rawData.map(item => item.diem_thang[month] ?? 0);
+
+        datasets.push({
+            label: `Tháng ${month}`,
+            data: dataForMonth,
+            backgroundColor: getColor(month),
+            stack: 'stack1'
+        });
+    }
+
+    const config = {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Biểu đồ cột chồng - Tổng điểm các tháng theo nhân viên'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'Nhân viên'
+                    }
+                },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    max: 100,
+
+                    title: {
+                        display: true,
+                        text: 'Tổng điểm'
+                    }
+                }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('stackedChart'), config);
+
+    // Hàm chọn màu theo tháng
+    function getColor(month) {
+        const colors = [
+            '#4dc9f6', '#f67019', '#f53794', '#537bc4', '#acc236',
+            '#166a8f', '#00a950', '#58595b', '#8549ba', '#e0ac69',
+            '#b83c6f', '#7bdcb5'
+        ];
+        return colors[(month - 1) % colors.length];
     }
 </script>
 

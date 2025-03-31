@@ -77,6 +77,9 @@ Route::prefix('/danh-muc-thang-nam')->as('danh-muc-thang-nam.')->group(function(
     // xuất file excel
     Route::get('/danh-muc-thang-nam/{danhMucThangNam}/xuat-file-excel', [DanhMucThangNamController::class, 'exportExcel'])->name('exportExcel');
 
+    // biểu đồ theo tháng
+    Route::get('/show/{danhMucThangNam}/bieu-do', [DanhMucThangNamController::class, 'bieuDoDanhMucThangNam'])->name('bieuDoDanhMucThangNam');
+
 });
 
 Route::prefix('/nhan-vien')->as('nhan-vien.')->group(function() {

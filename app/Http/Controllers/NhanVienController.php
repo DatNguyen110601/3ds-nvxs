@@ -46,9 +46,27 @@ class NhanVienController extends Controller
     public function show(User $danhSachNhanVien){
         // dd($danhSachNhanVien);
         $diemThang = $danhSachNhanVien->diemThang;
-        // dd($diemThang);
+
+        $data = $diemThang->map(function ($diemThang) {
+            $chiTietTieuChi = $diemThang->diemTheoTieuChi->map(function ($diemTieuChi) {
+                return [
+                    'tieu_chi' => $diemTieuChi->tenTieuChi->ten_tieu_chi ?? null,
+                    // điểm đã nhân hệ số
+                    'diem'     => $diemTieuChi->diem * $diemTieuChi->tenTieuChi->he_so,
+                ];
+            })->toArray();
+
+            return [
+                'nhan_vien' => $diemThang->nhanVien->name ?? null,
+                'tong_diem' => $diemThang->tong_diem,
+                'thang' => $diemThang->danhMucThangNam->thang,
+                'chi_tiet_tieu_chi' => $chiTietTieuChi,
+            ];
+        })->toArray();
+        // dd($data);
         return view('danh-sach-nhan-vien.show', ['danhSachNhanVien' => $danhSachNhanVien,
-                                                'diemThang' => $diemThang]);
+                                                'diemThang' => $diemThang,
+                                                'data' => $data]);
     }
 
     public function edit(User $danhSachNhanVien){

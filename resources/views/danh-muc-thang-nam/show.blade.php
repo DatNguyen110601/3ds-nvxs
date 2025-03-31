@@ -15,6 +15,16 @@ $list = [
     <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Tiêu chí nhân viên tháng {{$danhMucThangNam->thang}}</legend>
 
+        <div class="mb-2 mr-2">
+
+            <a href="{{route('danh-muc-thang-nam.bieuDoDanhMucThangNam', ['danhMucThangNam' => $danhMucThangNam])}}"
+                style="width:120px;" class="btn btn-warning" title="Biểu đồ">
+                <span class="material-symbols-outlined" >
+                    bar_chart
+                </span>
+                Biểu đồ</a>
+
+        </div>
         @can('duyet_diem')
         <div class="mb-2">
             <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-success" title="Duyệt">
