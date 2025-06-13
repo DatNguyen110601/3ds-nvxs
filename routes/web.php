@@ -7,6 +7,7 @@ use App\Models\DanhSachTieuChi;
 use App\Models\DiemTheoTieuChi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\NhanVienController;
 use App\Http\Controllers\DiemThangController;
 use App\Http\Controllers\DefaultRoleController;
@@ -53,6 +54,14 @@ use App\Http\Controllers\NhanVienTrongDMTNController;
 // ])->group(function () {
 //     Route::get('/', [HomeController::class])->name('home');
 // });
+
+
+// test slack
+
+Route::get('test/slack/create' , [TestController::class , 'create'])->name('slack.create');
+Route::post('test/slack' , [TestController::class , 'guiForm'])->name('slack.guiForm');
+Route::post('test/slack/store' , [TestController::class , 'store'])->name('slack.store');
+//
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/default-roles',DefaultRoleController::class);
