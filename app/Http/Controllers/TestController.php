@@ -27,8 +27,8 @@ class TestController extends Controller
 
 
         ]);
-        
-            $webhook = 'https://hooks.slack.com/services/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';
+
+            $webhook = 'https://hooks.slack.com/services/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';
 
             $payload = [
                 "blocks" => [
