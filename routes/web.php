@@ -56,11 +56,8 @@ use App\Http\Controllers\NhanVienTrongDMTNController;
 // });
 
 
-// test slack
 
-Route::get('test/slack/create' , [TestController::class , 'create'])->name('slack.create');
-Route::post('test/slack' , [TestController::class , 'guiForm'])->name('slack.guiForm');
-Route::post('test/slack/store' , [TestController::class , 'store'])->name('slack.store');
+
 //
 
 Route::middleware('auth:sanctum')->group(function(){

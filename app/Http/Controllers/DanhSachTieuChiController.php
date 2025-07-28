@@ -37,7 +37,7 @@ class DanhSachTieuChiController extends Controller
     public function store(Request $request){
 
         $validated = $this->__validate($request);
-
+        // dd($validated);
         $createTieuChi = DanhSachTieuChi::create($validated);
         if($createTieuChi){
             return redirect()->route('tieu-chi-nhan-vien.index')->with('status', 'Thêm tiêu chí thành công!');
