@@ -5,6 +5,13 @@ $list = [
     '#'=>'Danh sách tiêu chí',
 ];
 ?>
+<style>
+    .tooltip-inner {
+    max-width: 400px !important; /* chỉnh kích thước tùy ý */
+    white-space: normal;         /* cho phép xuống dòng */
+    text-align: left;            /* căn trái nội dung */
+}
+</style>
 
 <x-layout>
     <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;" >
@@ -60,7 +67,10 @@ $list = [
                     <tr>
                         <td>{{$key +1}}</td>
                         <td>{{$tieuChi->ten_tieu_chi}}</td>
-                        <td>{{$tieuChi->mo_ta}}</td>
+                        {{-- <td>{{$tieuChi->mo_ta}}</td> --}}
+                        <td data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $tieuChi->mo_ta }}">
+                            {{ \Illuminate\Support\Str::limit($tieuChi->mo_ta, 80, '...') }}
+                        </td>
 
                         <td>{{$tieuChi->diem_toi_thieu}}</td>
                         <td>{{$tieuChi->diem_toi_da}}</td>
@@ -133,6 +143,14 @@ $list = [
         formXoa.action = url;
         formXoa.submit();
     }
+
+
+    document.addEventListener("DOMContentLoaded", function(){
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
     </script>
 @endpush
 </x-layout>

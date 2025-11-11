@@ -43,7 +43,7 @@ $list = [
             <div class="form-group mb-3">
                 <label for="" >Mô tả (nếu có)</label>
                 <textarea type="text" name="mo_ta" class="form-control" placeholder="Tên tiêu chí"
-                rows="4" cols="50">{{ old('mo_ta', $danhSachTieuChi->mo_ta) }}</textarea>
+                rows="12" cols="50">{{ old('mo_ta', $danhSachTieuChi->mo_ta) }}</textarea>
             </div>
 
             <div class="form-group mb-3">

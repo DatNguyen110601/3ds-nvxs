@@ -72,4 +72,8 @@ class NhanVienTrongDMTNController extends Controller
             ])->with('status', 'Xoá nhân viên thành công!');
 
     }
+
+    public function test(){
+        return view('nhan-vien-trong-dmtn.test');
+    }
 }

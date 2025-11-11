@@ -31,6 +31,7 @@ $list = [
                             <th>Tiêu chí</th>
                             <th>Thang điểm</th>
                             <th>Điểm đạt được</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -42,12 +43,67 @@ $list = [
                                 <td>
                                     {{$tieuChi->tenTieuChi->diem_toi_thieu}} - {{$tieuChi->tenTieuChi->diem_toi_da}}
                                 </td>
+                                {{-- <td>
+
+                                        <div class="d-flex justify-content-center gap-2">
+                                            @for ($i = $tieuChi->tenTieuChi->diem_toi_thieu; $i <= $tieuChi->tenTieuChi->diem_toi_da; $i++)
+                                                <input type="radio"
+                                                       class="btn-check"
+                                                       name="inputs[{{ $tieuChi->id_tieu_chi }}]"
+                                                       id="radio-{{ $tieuChi->id_tieu_chi }}-{{ $i }}"
+                                                       value="{{ $i }}"
+                                                       required>
+                                                <label class="btn btn-outline-primary btn-sm"
+                                                       for="radio-{{ $tieuChi->id_tieu_chi }}-{{ $i }}">
+                                                    {{ $i }}
+                                                </label>
+                                            @endfor
+                                        </div>
+
+                                </td> --}}
+
+                            <td>
+                               @php
+                                   // Chọn ký tự phân tách, ví dụ dấu |
+                                    $separator = '#';
+                                    $moTaArray = explode($separator, $tieuChi->tenTieuChi->mo_ta);
+
+                                    // Tách mô tả theo xuống dòng
+                                    // $moTaArray = preg_split("/\r\n|\n|\r/", $tieuChi->tenTieuChi->mo_ta);
+                                @endphp
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    @for ($i = 1; $i <= $tieuChi->tenTieuChi->diem_toi_da; $i++)
+                                        @php
+                                            // Lấy mô tả cho từng điểm (nếu có)
+                                            $moTa = $moTaArray[$i - 1] ?? $tieuChi->tenTieuChi->mo_ta;
+                                        @endphp
+
+                                        <input type="radio"
+                                            class="btn-check"
+                                            name="inputs[{{ $tieuChi->id_tieu_chi }}]"
+                                            id="radio-{{ $tieuChi->id_tieu_chi }}-{{ $i }}"
+                                            value="{{ $i }}"
+                                            required>
+
+                                        <label class="btn btn-outline-primary btn-sm"
+                                            for="radio-{{ $tieuChi->id_tieu_chi }}-{{ $i }}"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="{{ $moTa }}">
+                                            {{ $i }}
+                                        </label>
+                                    @endfor
+                                </div>
+                            </td>
+
+
                                 {{-- <td><input type="number" name="diem_dat_duoc[]" class="form-control" placeholder="Điểm đạt được" required></td> --}}
-                                <td>
+                                {{-- <td>
                                     <input type="number" name="inputs[{{$tieuChi->id_tieu_chi}}]" id="input-{{$tieuChi->id}}" placeholder="Điểm đạt được"
                                     min="{{$tieuChi->tenTieuChi->diem_toi_thieu}}" max="{{$tieuChi->tenTieuChi->diem_toi_da}}"class="form-control" required/>
 
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                         @endif
@@ -94,7 +150,15 @@ $list = [
         </form>
  */?>
 @push('script')
-
+    {{-- Kích hoạt tooltip của Bootstrap --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
 
 @endpush
 </x-layout>

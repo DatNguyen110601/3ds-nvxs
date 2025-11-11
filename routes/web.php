@@ -165,6 +165,8 @@ Route::prefix('')->as('nhan-vien-trong-dmtn.')->group(function() {
 
 });
 
+Route::get('/test/test/test/test', [NhanVienTrongDMTNController::class, 'test'])->name('test');
+
 
 
 });

@@ -36,8 +36,6 @@ $list = [
         </div>
     @endif
 
-
-
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="table-light" >

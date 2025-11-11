@@ -34,7 +34,7 @@ class ChamDiemNhanVienController extends Controller
         $diemTheoTieuChi = $diemThang->diemTheoTieuChi;
 
         $tieuChiTheoThang = $danhMucThangNam->dsTieuChiThang;
-
+        
         return view('cham-diem-nhan-vien.create', ['danhMucThangNam' => $danhMucThangNam,
                                                 'nhanVien' =>$nhanVien,
                                                 'diemThang' => $diemThang,

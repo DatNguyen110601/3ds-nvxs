@@ -27,7 +27,8 @@ $list = [
         </div>
         @can('duyet_diem')
         <div class="mb-2">
-            <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-success" title="Duyệt">
+            <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-success" title="Duyệt"
+                onclick="return confirm('Bạn có chắc chắn muốn DUYỆT?');">
                 <span class="material-symbols-outlined">
                     task_alt
                 </span>
@@ -196,7 +197,8 @@ $list = [
                             @if ($value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
                                 <a href="{{route('duyet.removeDuyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
                                     'nhanVien' =>$value->nhanVien])}}" title="Bỏ duyệt"
-                                    onclick="return confirmAction(event, 'Bạn có chắc chắn muốn BỎ DUYỆT?')">
+                                    onclick="return confirm('Bạn có chắc chắn muốn BỎ DUYỆT?');">
+
                                     <span class="material-symbols-outlined fs-3" style="color: #bbb">
                                         task_alt
                                     </span>
@@ -206,7 +208,7 @@ $list = [
                             @else
                                 <a href="{{route('duyet.duyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
                                     'nhanVien' =>$value->nhanVien])}}" title="Duyệt"
-                                    onclick="return confirmAction(event, 'Bạn có chắc chắn muốn DUYỆT?')">
+                                    onclick="return confirm('Bạn có chắc chắn muốn DUYỆT?');">
                                     <span class="material-symbols-outlined fs-3" style="color: #198754">
                                     task_alt
                                     </span>

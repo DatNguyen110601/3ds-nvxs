@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('ten_tieu_chi');
             $table->float('diem_toi_da');
             $table->float('diem_toi_thieu')->default(0);
-            $table->tinyInteger('he_so');
+            $table->float('he_so');
             $table->boolean('trang_thai')->default(false);
 
             // $table->timestamps();
