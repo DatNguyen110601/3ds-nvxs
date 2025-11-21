@@ -44,7 +44,6 @@
         <script src="{{asset('js/app.js')}}"></script>
 
         @stack('modals')
-
         @livewireScripts
     </body>
 </html>

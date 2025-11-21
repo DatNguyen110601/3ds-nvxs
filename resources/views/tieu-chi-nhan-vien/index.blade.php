@@ -23,13 +23,16 @@ $list = [
     <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Danh sách tiêu chí</legend>
         <div>
-            @can('add_danh_sach_tieu_chi')
+            {{-- @can('add_danh_sach_tieu_chi') --}}
+            @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
+
                 <a href="{{route('tieu-chi-nhan-vien.create')}}" class="btn btn-primary">
                     <span class="material-symbols-outlined" >
                         add_task
                     </span>
                     Thêm</a>
-            @endcan
+            @endif
+            {{-- @endcan --}}
         </div>
     </div>
 
@@ -89,14 +92,16 @@ $list = [
 
                         </td>
                         <td>
-                            @can('edit_danh_sach_tieu_chi')
+                            {{-- @can('edit_danh_sach_tieu_chi') --}}
+                            @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
+
                                 <a href="{{route('tieu-chi-nhan-vien.edit', $tieuChi)}}">
                                     <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;" title="Sửa">
                                         border_color
                                     </span>
                                 </a>
-                            @endcan
-                            @can('delete_danh_sach_tieu_chi')
+                            {{-- @endcan --}}
+                            {{-- @can('delete_danh_sach_tieu_chi') --}}
                                 <?php
 
                                 $url = route('tieu-chi-nhan-vien.delete', ['danhSachTieuChi' => $tieuChi]);
@@ -107,7 +112,8 @@ $list = [
                                         delete
                                     </span>
                                 </button>
-                            @endcan
+                                @endif
+                            {{-- @endcan --}}
 
                     </td>
                     </tr>

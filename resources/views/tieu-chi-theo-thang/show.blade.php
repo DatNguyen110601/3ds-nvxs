@@ -17,14 +17,16 @@ $list = [
             <legend class="legend">Tiêu chí tháng {{$danhMucThangNam->thang}}</legend>
             <div class="mb-2">
 
-                @can('add_tieu_chi_theo_thang')
+                {{-- @can('add_tieu_chi_theo_thang') --}}
+                @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
 
                     <a href="{{route('tieu-chi-theo-thang.them-tieu-chi-thang', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-primary">
                         <span class="material-symbols-outlined" >
                             add_task
                         </span>
                         Thêm</a>
-                @endcan
+                @endif
+                {{-- @endcan --}}
             </div>
         </div>
 
@@ -58,7 +60,9 @@ $list = [
                             <td>{{$key +1}}</td>
                             <td>{{$tieuChi->tenTieuChi->ten_tieu_chi}}</td>
                             <td>
-                                @can('edit_tieu_chi_theo_thang')
+                                {{-- @can('edit_tieu_chi_theo_thang') --}}
+                                @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
+
                                     <a href="{{route('tieu-chi-theo-thang.sua-tieu-chi-thang', ['danhMucThangNam' =>$danhMucThangNam,
                                         'id_thang_nam'=> $tieuChi->id_thang_nam ,
                                         'id_tieu_chi'=> $tieuChi->id_tieu_chi,
@@ -67,9 +71,9 @@ $list = [
                                     border_color
                                     </span>
                                     </a>
-                                @endcan
+                                {{-- @endcan --}}
 
-                                @can('delete_tieu_chi_theo_thang')
+                                {{-- @can('delete_tieu_chi_theo_thang') --}}
                                     <?php
 
                                         $url = route('tieu-chi-theo-thang.delete', ['id_thang_nam' => $tieuChi->id_thang_nam, 'id_tieu_chi' => $tieuChi->id_tieu_chi]);
@@ -80,7 +84,8 @@ $list = [
                                             delete
                                         </span>
                                     </button>
-                                @endcan
+                                @endif
+                                {{-- @endcan --}}
 
                                     {{-- <a href="" title="Xóa">
                                         <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">

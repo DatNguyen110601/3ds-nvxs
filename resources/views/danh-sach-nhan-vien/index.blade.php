@@ -63,19 +63,14 @@ $list = [
                                     table_eye
                                 </span>
                                 </a>
-                            @can('edit_nhan_vien')
+                            {{-- @can('edit_nhan_vien')
                             <a href="{{route('nhan-vien.edit', $nhanVien)}}" title=Sửa>
                                 <span class="material-symbols-outlined fs-3"  style="color: #0dcaf0;">
                                     border_color
                                 </span>
                             </a>
-                            @endcan
+                            @endcan --}}
 
-                            {{-- <a href="" title="Xóa">
-                                <span class="material-symbols-outlined fs-3 " style="color: red;" title="Xóa">
-                                    delete
-                                </span>
-                            </a> --}}
                         </td>
                     </tr>
                 @endforeach

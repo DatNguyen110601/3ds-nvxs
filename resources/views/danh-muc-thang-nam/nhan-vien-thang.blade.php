@@ -23,6 +23,104 @@ $list = [
                 </span>
                 Thêm</a>
         </div> --}}
+
+        <div class="d-flex">
+            @can('duyet_diem')
+                <div class="mb-2 mr-2">
+
+                    @if ($nhanVien->duyet == 1)
+                                <a href="{{route('duyet.removeDuyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
+                                    'nhanVien' =>$nhanVien])}}" title="Bỏ duyệt"
+                                    onclick="return confirm('Bạn có chắc chắn muốn BỎ DUYỆT?');"
+                                    class="btn btn-success"
+                                    >
+
+                                    <span class="material-symbols-outlined" style="color: #bbb">
+                                        task_alt
+                                    </span>
+                                    Duyệt
+                                </a>
+
+
+                            @else
+                                <a href="{{route('duyet.duyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
+                                    'nhanVien' =>$nhanVien])}}" title="Duyệt"
+                                    onclick="return confirm('Bạn có chắc chắn muốn DUYỆT?');"
+                                    class="btn btn-success"
+                                    style="width:160px"
+                                    >
+                                    <span class="material-symbols-outlined" style="color: #bbb">
+                                    task_alt
+                                    </span>
+                                    Hủy Duyệt
+                                </a>
+                            @endif
+
+                </div>
+            @endcan
+
+            @can('add_edit_diem')
+
+                @if ($diemThang->tong_diem == 0)
+                    <div class="mb-2 mr-2">
+                        <a href="{{route('cham-diem-nhan-vien.create',
+                        [
+                            'danhMucThangNam' =>$danhMucThangNam,
+                            'nhanVien' => $diemThang->nhanVien,
+
+                        ])}}" title="Chấm điểm"
+                                    class="btn btn-info"
+
+                        style="width:160px;"
+
+
+                        >
+                        <span class="material-symbols-outlined" >
+                            border_color
+                        </span>
+                        Chấm điểm
+                        </a>
+                    </div>
+
+                @else
+                    <div class="mb-2 mr-2">
+                        <a href="{{route('cham-diem-nhan-vien.edit',
+                            [
+                                'danhMucThangNam' =>$danhMucThangNam,
+                                'nhanVien' => $diemThang->nhanVien,
+
+                            ])}}" title="Chấm điểm"
+                            style="width:160px;"
+                            class="btn btn-success"
+                            >
+                            <span class="material-symbols-outlined" style="color: #0dcaf0; ">
+                                border_color
+                            </span>
+                            Sửa điểm
+                        </a>
+                    </div>
+                @endif
+
+                @endcan
+                <div class="mb-2 mr-2">
+                    <a href="{{route('danh-muc-thang-nam.xem-lich-su',
+                                    [
+                                        'danhMucThangNam' =>$danhMucThangNam,
+                                        'nhanVien' => $nhanVien,
+
+                                    ])}}"
+                                    class="btn btn-warning"
+                                    style="width:160px;"
+                                    title="Xem lịch sử">
+                                    <span class="material-symbols-outlined">
+                                        history
+                                    </span>
+                                Xem lịch sử
+
+                    </a>
+                </div>
+        </div>
+
     </div>
 
     @if (session('status'))
@@ -92,7 +190,7 @@ $list = [
                         @endcan
                         */?>
 
-                        @can('add_edit_diem')
+                        {{-- @can('add_edit_diem')
 
                         @if ($diemThang->tong_diem == 0)
 
@@ -140,7 +238,7 @@ $list = [
                                         </span>
 
                         </a>
-                    </td>
+                    </td> --}}
                 </tr>
                 <tr>
                     <td colspan="4"><strong>Tổng điểm: {{$diemThang->tong_diem}}</strong></td>

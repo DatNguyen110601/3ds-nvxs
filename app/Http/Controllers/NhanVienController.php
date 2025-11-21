@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\ViTri;
 use App\Models\NhanVien;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +12,20 @@ class NhanVienController extends Controller
 {
     public function index(){
         $danhSachNhanVien = User::where('status', User::STATUS_ACTIVE)->where('type', User::EMPLOYEE)->get();
-
+        // $user = auth()->user();
+        // dd($user->viTri);
+        // $phongBans = $user->userThuocPhongBan;
+        // dd($phongBans);
+        // dd([
+        //         'Tên user' => $user->name,
+        //         'Role của user' => $user->getRoleNames(),
+        //         'Permission trực tiếp' => $user->getPermissionNames(),
+        //         'Có quyền sửa?' => $user->can('edit_danh_muc_thang_nam'),
+        //     ]);
+        // $a = $user->getRoleNames(); // ['Admin', 'Manager']
+        // dd($a);
+        // $b= $user->getPermissionNames();
+        // dd($b);
         return view('danh-sach-nhan-vien.index', ['danhSachNhanVien' => $danhSachNhanVien]);
     }
 

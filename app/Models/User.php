@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\ViTri;
+use App\Models\PhongBan;
 use App\Models\DiemThang;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -70,6 +71,8 @@ class User extends Authenticatable
 
     CONST STATUS_ACTIVE = 1;
     CONST STATUS_BANNED = 0;
+
+    CONST ID_USER_CO_QUYEN = [573];
     /**
      * Get all of the comments for the User
      *
@@ -90,4 +93,72 @@ class User extends Authenticatable
         return $this->hasMany(ViTri::class, 'id_user', 'id');
     }
 
+
+
+    //
+    public function userThuocPhongBan()
+    {
+        return $this->belongsToMany(PhongBan::class,'tochuc___user_thuoc_phong_bans','id_user','id_phong_ban');
+    }
+
+    public function isViTri($viTriKiemTra)
+    {
+        $viTriUser = $this->viTri->first();
+        $listIDCapDuoi = $this->listIdCapDuoi($viTriUser);
+        return  $listIDCapDuoi;
+    }
+
+    public function dsViTri($viTriKiemTra)
+    {
+        $viTriUser = $this->viTri->first();
+        // Danh sách có cả chính nó
+        $listIDCapDuoi = $this->listIdCapDuoi($viTriUser);
+        // Loại bỏ chính vị trí user
+        $listIDCapDuoi = array_values(array_filter($listIDCapDuoi, fn($id) => $id != $viTriUser->id));
+        // Nếu sau khi loại mà trống -> trả về rỗng
+        if (empty($listIDCapDuoi)) {
+            return [];
+        }
+
+        return $listIDCapDuoi;
+    }
+
+    // public function dsViTri($viTriKiemTra)
+    //     {
+    //         $viTriUser = $this->viTri->first();
+    //         // dd($viTriUser);
+    //         $listIDCapDuoi = $this->listIdCapDuoi($viTriUser);
+    //         return $listIDCapDuoi;
+    //     }
+
+
+    public function isCapTren($viTriKiemTra)
+    {
+        $viTriUser = $this->viTri;
+        $listIDCapDuoi = $this->listIdCapDuoi($viTriUser);
+        unset($listIDCapDuoi[0]);
+        return in_array($viTriKiemTra->id, $listIDCapDuoi);
+
+    }
+
+    public function listIdCapDuoi($viTri)
+    {
+        $listID = [$viTri->id];
+        if($viTri->capDuoi->isNotEmpty()){
+            foreach ($viTri->capDuoi as $capDuoi) {
+                // Gọi đệ quy để lấy danh sách ID cấp dưới của viTri
+                $listID = array_merge($listID, $this->listIdCapDuoi($capDuoi));
+
+            }
+        }
+
+       return $listID;
+    }
+
+
+
+    public function quyenHr()
+{
+    return in_array($this->id, self::ID_USER_CO_QUYEN);
+}
 }

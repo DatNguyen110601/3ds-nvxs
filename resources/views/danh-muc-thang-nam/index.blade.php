@@ -12,7 +12,9 @@ $list = [
 
     <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend font-normal">Danh mục tháng năm</legend>
-        @can('add_danh_muc_thang_nam')
+        {{-- @can('add_danh_muc_thang_nam') --}}
+        @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
+
         <div>
             <a href="{{route('danh-muc-thang-nam.create')}}" class="btn btn-primary">
                 <span class="material-symbols-outlined" >
@@ -20,7 +22,8 @@ $list = [
                 </span>
                 Thêm</a>
         </div>
-        @endcan
+        @endif
+        {{-- @endcan --}}
 
 
     </div>
@@ -67,7 +70,9 @@ $list = [
                                     </span>
                                 </a>
 
-                            @can('edit_danh_muc_thang_nam')
+                            {{-- @can('edit_danh_muc_thang_nam') --}}
+                            @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
+
                             <a href="{{route('danh-muc-thang-nam.edit', $danhMuc)}}" title="Sửa" >
                                 <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
                                     border_color
@@ -82,7 +87,8 @@ $list = [
                                     delete
                                 </span>
                             </button>
-                            @endcan
+                            @endif
+                            {{-- @endcan --}}
                         </td>
                     </tr>
 
@@ -99,6 +105,7 @@ $list = [
 </form>
 
 @push('scripts')
+
 <script type="text/javascript">
     function xoaThongTin(url) {
 
