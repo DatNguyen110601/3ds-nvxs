@@ -43,20 +43,7 @@ $list = [
 
                     <div class="col-auto" >
 
-                        <select id="phong_ban" name="phong_ban">
-                            {{-- <option value="0">Tất cả phòng ban</option>
-                            <option value="0">Tất cả phòng ban</option> --}}
-
-
-                            @foreach ($dsPhongBan as $pb)
-
-                                <option value="{{ $pb->id }}" {{ $phongBan == $pb->id ? 'selected' : '' }}>
-                                    {{ $pb->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        {{-- <select id="id_nhan_vien" name="id_nhan_vien">
+                        <select id="id_nhan_vien" name="id_nhan_vien">
                             <option value="0">Tất cả nhân viên</option>
                             @foreach ($dsNhanVien as $nhanVien)
 
@@ -64,7 +51,7 @@ $list = [
                                    {{$viTri->phong_ban}}
                                 @endforeach - {{$nhanVien->name}} </option>
                             @endforeach
-                        </select> --}}
+                        </select>
 
 
                         <?php /* $arrIDOldNhom = old('id_nhom') == null ? [] : old('id_nhom'); */ ?>
@@ -107,10 +94,9 @@ $list = [
                     @endif
                 </legend>
 
-                {{-- @if ($danhMuc!= null && $idNhanVien == null) --}}
+                @if ($danhMuc!= null && $idNhanVien == null)
 
                     {{-- @can('duyet_diem') --}}
-                    @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
 
                         <div class="mb-2">
                             <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMuc])}}" class="btn btn-success" title="Duyệt">
@@ -134,7 +120,7 @@ $list = [
 
                     </div>
                     {{-- @endcan --}}
-
+                @endif
                 {{-- @can('add_danh_muc_thang_nam') --}}
                 <div class="mb-2 ml-2">
                     <a href="{{route('nhan-vien-trong-dmtn.create', ['danhMucThangNam' =>$danhMuc])}}" class="btn btn-primary">
@@ -144,8 +130,6 @@ $list = [
                         Thêm</a>
 
                 </div>
-                @endif
-                {{-- @endif --}}
                 {{-- @endcan --}}
 
 
@@ -201,7 +185,7 @@ $list = [
                             </td>
                             <td>
                                 @foreach ($value['diemThang']->nhanVien->viTri as $item)
-                                    {{$item->phongBan->name}}
+                                    {{$item->phong_ban}}
                                 @endforeach
                             </td>
                             <td>
@@ -236,18 +220,8 @@ $list = [
                                         table_eye
                                     </span>
                                 </a>
-                                {{-- @can('add_edit_diem') --}}
-
-                                <?php
-                                $user = auth()->user();
-                                $viTri = $user->viTri->first();
-                                $listIDCapDuoi = $user->dsViTri($viTri);   // trả về [id cấp dưới ...]
-                                $idViTriNhanVien = optional($value['diemThang']->nhanVien->viTri->first())->id;
-                                $viTriCapTren = in_array($idViTriNhanVien, $listIDCapDuoi);
-                                ?>
-
-
-                            @if ($user->hasRole('Admin') || auth()->user()->quyenHr() || $viTriCapTren )
+                                @can('add_edit_diem')
+                                {{-- @if($value['diemThang']->duyet == 1) --}}
                                     @if ($value['diemThang']->tong_diem == 0)
                                         <a href="{{route('cham-diem-nhan-vien.create',
                                         [
@@ -278,14 +252,14 @@ $list = [
 
                                         </a>
                                     @endif
-
-                               @endif
-                                {{-- @endcan --}}
+                                {{-- @endif --}}
 
 
-                                {{-- @can('duyet_diem') --}}
-                                @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
 
+
+                                @endcan
+
+                                @can('duyet_diem')
                                 @if ($value['diemThang']->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
                                         <a href="{{route('duyet.removeDuyetDiemThang', ['danhMucThangNam' => $danhMuc,
                                         'nhanVien' =>$value['diemThang']->nhanVien])}}" title="Bỏ duyệt"
@@ -307,8 +281,8 @@ $list = [
 
                                 @endif
 
-                                {{-- @endcan --}}
-                                {{-- @can('delete_nhan_vien_trong_dmtn') --}}
+                                @endcan
+                                @can('delete_nhan_vien_trong_dmtn')
                                     <?php
                                             $urlXoa = route('nhan-vien-trong-dmtn.delete', ['danhMucThangNam'=> $danhMuc,
                                                                                             'diemThang' => $value['diemThang']]);
@@ -318,8 +292,7 @@ $list = [
                                                 delete
                                             </span>
                                         </button>
-                                @endif
-                                {{-- @endcan --}}
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

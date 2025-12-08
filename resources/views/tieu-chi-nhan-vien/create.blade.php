@@ -34,10 +34,12 @@ $list = [
                     {{ $message }}
                 </p>
             @enderror
+
+
             <div class="form-group mb-3">
                 <label for="" >Mô tả (nếu có)</label>
                 <textarea type="text" name="mo_ta" value="{{old('mo_ta')}}" class="form-control" placeholder="Tên tiêu chí"
-                rows="4" cols="50"></textarea>
+                rows="12" cols="50"></textarea>
             </div>
             <div class="form-group mb-3">
                 <label for="" >Điểm tối thiểu</label>
@@ -71,8 +73,12 @@ $list = [
 
 </div>
 
+
+
 @push('scripts')
+
     <script>
+
         document.getElementById("formTieuChi").addEventListener("submit", (event) => {
             const diemToiThieu = document.getElementById("diem_toi_thieu");
             const diemToiDa = document.getElementById("diem_toi_da");
@@ -82,6 +88,10 @@ $list = [
                 diemToiThieu.classList.add("is-invalid");
             }
         });
+
+
+
+
     </script>
 @endpush
 </x-layout>

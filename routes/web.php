@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/default-roles',DefaultRoleController::class);
 // Route::get('/', [DanhMucThangNamController::class, 'home'])->name('home');
     Route::get('/', HomeController::class)->name('home');
+Route::get('/setup-default-roles', DefaultRoleController::class);
 
 Route::prefix('/danh-muc-thang-nam')->as('danh-muc-thang-nam.')->group(function() {
     Route::get('/', [DanhMucThangNamController::class, 'index'])->name('index');
@@ -164,6 +165,8 @@ Route::prefix('')->as('nhan-vien-trong-dmtn.')->group(function() {
     Route::delete('/danh-muc-thang-nam/{danhMucThangNam}/diem-thang/{diemThang}/delete', [NhanVienTrongDMTNController::class, 'destroy'])->name('delete');
 
 });
+
+Route::get('/test/test/test/test', [NhanVienTrongDMTNController::class, 'test'])->name('test');
 
 
 

@@ -25,17 +25,20 @@ $list = [
                 Biểu đồ</a>
 
         </div>
-        @can('duyet_diem')
+        {{-- @can('duyet_diem') --}}
+
+        @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
         <div class="mb-2">
-            <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-success" title="Duyệt">
+            <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMucThangNam])}}" class="btn btn-success" title="Duyệt"
+                onclick="return confirm('Bạn có chắc chắn muốn DUYỆT?');">
                 <span class="material-symbols-outlined">
                     task_alt
                 </span>
                 Duyệt</a>
         </div>
-        @endcan
+        {{-- @endcan --}}
 
-        @can('export_excel')
+        {{-- @can('export_excel') --}}
         <div class="mb-2 ml-2">
 
             <a href="{{route('danh-muc-thang-nam.exportExcel', ['danhMucThangNam' => $danhMucThangNam])}}"
@@ -46,9 +49,9 @@ $list = [
                 Tải file excel</a>
 
         </div>
-        @endcan
+        {{-- @endcan --}}
 
-        @can('add_danh_muc_thang_nam')
+        {{-- @can('add_danh_muc_thang_nam') --}}
         <div class="mb-2 ml-2">
             <a href="{{route('nhan-vien-trong-dmtn.create', ['danhMucThangNam' =>$danhMucThangNam])}}" class="btn btn-primary">
                 <span class="material-symbols-outlined" >
@@ -57,7 +60,8 @@ $list = [
                 Thêm</a>
 
         </div>
-        @endcan
+        @endif
+        {{-- @endcan --}}
 
     </div>
 
@@ -156,9 +160,51 @@ $list = [
                             @endcan
 
                             */?>
-                            @can('add_edit_diem')
+                            {{-- @can('add_edit_diem') --}}
+                            <?php
+                                $user = auth()->user();
+                                $viTri = $user->viTri->first();
+                                $listIDCapDuoi = $user->dsViTri($viTri);   // trả về [id cấp dưới ...]
+                                $idViTriNhanVien = optional($value->nhanVien->viTri->first())->id;
+                                $viTriCapTren = in_array($idViTriNhanVien, $listIDCapDuoi);
+                                ?>
 
-                                    @if ($value->tong_diem == 0)
+                            @if ($user->hasRole('Admin') || $user->quyenHr() || $viTriCapTren)
+
+                                @if ($value->tong_diem == 0)
+
+                                    {{-- CREATE --}}
+                                    <a href="{{ route('cham-diem-nhan-vien.create', [
+                                        'danhMucThangNam' => $danhMucThangNam,
+                                        'nhanVien' => $value->nhanVien,
+                                    ]) }}"
+                                    style="{{ $value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 0) ? '' : 'pointer-events: none; opacity: 0.5;' }}"
+                                    >
+                                        <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
+                                            border_color
+                                        </span>
+                                    </a>
+
+                                @else
+
+                                    {{-- EDIT --}}
+                                    <a href="{{ route('cham-diem-nhan-vien.edit', [
+                                        'danhMucThangNam' => $danhMucThangNam,
+                                        'nhanVien' => $value->nhanVien,
+                                    ]) }}"
+                                    style="{{ $value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 0) ? '' : 'pointer-events: none; opacity: 0.5;' }}"
+                                    >
+                                        <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
+                                            border_color
+                                        </span>
+                                    </a>
+
+                                @endif
+
+                            @endif
+
+
+                                    {{-- @if ($value->tong_diem == 0)
 
                                         <a href="{{route('cham-diem-nhan-vien.create',
                                         [
@@ -188,15 +234,18 @@ $list = [
                                         </span>
 
                                         </a>
-                                    @endif
+                                    @endif --}}
 
-                            @endcan
 
-                            @can('duyet_diem')
+                            {{-- @endcan --}}
+
+                            {{-- @can('duyet_diem') --}}
+                            @if ($user->hasRole('Admin') || $user->quyenHr() )
                             @if ($value->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
                                 <a href="{{route('duyet.removeDuyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
                                     'nhanVien' =>$value->nhanVien])}}" title="Bỏ duyệt"
-                                    onclick="return confirmAction(event, 'Bạn có chắc chắn muốn BỎ DUYỆT?')">
+                                    onclick="return confirm('Bạn có chắc chắn muốn BỎ DUYỆT?');">
+
                                     <span class="material-symbols-outlined fs-3" style="color: #bbb">
                                         task_alt
                                     </span>
@@ -206,15 +255,16 @@ $list = [
                             @else
                                 <a href="{{route('duyet.duyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
                                     'nhanVien' =>$value->nhanVien])}}" title="Duyệt"
-                                    onclick="return confirmAction(event, 'Bạn có chắc chắn muốn DUYỆT?')">
+                                    onclick="return confirm('Bạn có chắc chắn muốn DUYỆT?');">
                                     <span class="material-symbols-outlined fs-3" style="color: #198754">
                                     task_alt
                                     </span>
                                 </a>
                             @endif
-
-                            @endcan
-                            @can('delete_nhan_vien_trong_dmtn')
+                            @endif
+                            {{-- @endcan --}}
+                            {{-- @can('delete_nhan_vien_trong_dmtn') --}}
+                            @if ($user->hasRole('Admin') || $user->quyenHr() )
                                 <?php
                                 $urlXoa = route('nhan-vien-trong-dmtn.delete', ['danhMucThangNam'=> $danhMucThangNam,
                                                                                 'diemThang' => $value]);
@@ -224,8 +274,8 @@ $list = [
                                         delete
                                     </span>
                                 </button>
-
-                            @endcan
+                            @endif
+                            {{-- @endcan --}}
 
                         </td>
                     </tr>
@@ -246,6 +296,17 @@ $list = [
     </form>
 
 @push('scripts')
+<script>
+    setTimeout(() => {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.classList.add('fade');
+            alert.classList.remove('show');
+
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 5000);
+</script>
     <script type="text/javascript">
         function xoaThongTin(url) {
 

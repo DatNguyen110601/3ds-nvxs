@@ -33,3 +33,4 @@ body {
 .detail-grid > div > label {
     @apply w-40 xl:text-right;
 }
+

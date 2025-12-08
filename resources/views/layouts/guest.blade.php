@@ -19,6 +19,13 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
         <!-- Styles -->
         @livewireStyles
+
+            <?php
+            $urlTiny = "https://cdn.tiny.cloud/1/" . config('services.tinymce.key') . "/tinymce/7/tinymce.min.js"
+            ?>
+
+            <script src="{{$urlTiny}}" referrerpolicy="origin"></script>
+
     </head>
     <body>
         <div class="font-sans text-gray-900 antialiased">

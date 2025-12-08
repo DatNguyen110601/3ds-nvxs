@@ -31,18 +31,14 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
     />
+    <script src="https://cdn.tiny.cloud/1/skzi8b3ozn3z1b6iabah1s6fbwzbikm6uxc483ybg2ln6js8/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+
     @livewireStyles
-
-
-    <?php /*
-    $urlTiny = "https://cdn.tiny.cloud/1/" . config('services.tinymce.key') . "/tinymce/7/tinymce.min.js"
-    */ ?>
-
-    {{-- <script src="{{$urlTiny}}" referrerpolicy="origin"></script> --}}
 
 </head>
 
 <body class="px-10">
+
     <header class="w-full bg-white p-3 flex items-center justify-between" >
         <div>
         <a href="{{route('home')}}">
@@ -92,6 +88,17 @@
         </div>
 
     </div>
+    {{-- <div class="mb-3 w-full">
+                <label for="noi_dung" class="form-label">Nội dung</label>
+                <!-- Wrapper để thay đổi nội dung -->
+                <div id="textarea-wrapper" >
+
+                    <textarea class="form-control mt-3" id="noi_dung" name="noi_dung" placeholder="Nội dung phần" style="height: 250px"></textarea>
+                </div>
+
+            </div> --}}
+
+
 
     <script src="{{ asset('js/jquery-3.5.1.min.js') }}" crossorigin="anonymous"></script>
     <script
@@ -100,13 +107,20 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
     ></script>
+
+
     @stack('scripts')
+
     <script>
+
         function toggleMenu() {
             const submenu = document.getElementById('submenu');
             submenu.classList.toggle('hidden');
         }
     </script>
+
+
+
 </body>
 
 </html>

@@ -43,20 +43,7 @@ $list = [
 
                     <div class="col-auto" >
 
-                        <select id="phong_ban" name="phong_ban">
-                            {{-- <option value="0">Tất cả phòng ban</option>
-                            <option value="0">Tất cả phòng ban</option> --}}
-
-
-                            @foreach ($dsPhongBan as $pb)
-
-                                <option value="{{ $pb->id }}" {{ $phongBan == $pb->id ? 'selected' : '' }}>
-                                    {{ $pb->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        {{-- <select id="id_nhan_vien" name="id_nhan_vien">
+                        <select id="id_nhan_vien" name="id_nhan_vien">
                             <option value="0">Tất cả nhân viên</option>
                             @foreach ($dsNhanVien as $nhanVien)
 
@@ -64,7 +51,7 @@ $list = [
                                    {{$viTri->phong_ban}}
                                 @endforeach - {{$nhanVien->name}} </option>
                             @endforeach
-                        </select> --}}
+                        </select>
 
 
                         <?php /* $arrIDOldNhom = old('id_nhom') == null ? [] : old('id_nhom'); */ ?>
@@ -107,7 +94,7 @@ $list = [
                     @endif
                 </legend>
 
-                {{-- @if ($danhMuc!= null && $idNhanVien == null) --}}
+                @if ($danhMuc!= null && $idNhanVien == null)
 
                     {{-- @can('duyet_diem') --}}
                     @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
@@ -145,7 +132,7 @@ $list = [
 
                 </div>
                 @endif
-                {{-- @endif --}}
+                @endif
                 {{-- @endcan --}}
 
 
@@ -201,7 +188,7 @@ $list = [
                             </td>
                             <td>
                                 @foreach ($value['diemThang']->nhanVien->viTri as $item)
-                                    {{$item->phongBan->name}}
+                                    {{$item->phong_ban}}
                                 @endforeach
                             </td>
                             <td>

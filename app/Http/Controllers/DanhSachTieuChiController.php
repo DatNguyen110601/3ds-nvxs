@@ -35,7 +35,7 @@ class DanhSachTieuChiController extends Controller
     }
 
     public function store(Request $request){
-
+        // dd($request->all());
         $validated = $this->__validate($request);
         // dd($validated);
         $createTieuChi = DanhSachTieuChi::create($validated);

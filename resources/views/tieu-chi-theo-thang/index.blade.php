@@ -15,13 +15,16 @@ $list = [
         <div class=" d-flex justify-content-between mb-3 mt-4">
             <legend class="legend">Danh sách tiêu chí theo tháng</legend>
             <div>
-                @can('add_tieu_chi_theo_thang')
+                {{-- @can('add_tieu_chi_theo_thang') --}}
+                @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
+
                 <a href="{{route('tieu-chi-theo-thang.create')}}" class="btn btn-primary">
                     <span class="material-symbols-outlined" >
                         add_task
                     </span>
                     Thêm</a>
-                @endcan
+                @endif
+                {{-- @endcan --}}
 
             </div>
         </div>

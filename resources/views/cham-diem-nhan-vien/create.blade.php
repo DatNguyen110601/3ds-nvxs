@@ -19,6 +19,7 @@ $list = [
     </div>
     <div class=" d-flex justify-content-between mb-2">
         <legend class="legend">Chấm điểm nhân viên {{$nhanVien->name}}</legend>
+
     </div>
 
     <div class="container mt-3">
@@ -31,6 +32,8 @@ $list = [
                             <th>Tiêu chí</th>
                             <th>Thang điểm</th>
                             <th>Điểm đạt được</th>
+                            <th>Hành động</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -42,12 +45,70 @@ $list = [
                                 <td>
                                     {{$tieuChi->tenTieuChi->diem_toi_thieu}} - {{$tieuChi->tenTieuChi->diem_toi_da}}
                                 </td>
+
+
+                            <td>
+                               @php
+                                   // Chọn ký tự phân tách, ví dụ dấu |
+                                    $separator = '#';
+                                    $moTaArray = explode($separator, $tieuChi->tenTieuChi->mo_ta);
+
+                                    // Tách mô tả theo xuống dòng
+                                    // $moTaArray = preg_split("/\r\n|\n|\r/", $tieuChi->tenTieuChi->mo_ta);
+                                @endphp
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    @for ($i = 1; $i <= $tieuChi->tenTieuChi->diem_toi_da; $i++)
+                                        @php
+                                            // Lấy mô tả cho từng điểm (nếu có)
+                                            $moTa = $moTaArray[$i - 1] ?? $tieuChi->tenTieuChi->mo_ta;
+                                        @endphp
+
+                                        <input type="radio"
+                                            class="btn-check"
+                                            name="inputs[{{ $tieuChi->id_tieu_chi }}]"
+                                            id="radio-{{ $tieuChi->id_tieu_chi }}-{{ $i }}"
+                                            value="{{ $i }}"
+                                            required>
+
+                                        <label class="btn btn-outline-primary btn-sm"
+                                            for="radio-{{ $tieuChi->id_tieu_chi }}-{{ $i }}"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="bottom"
+                                            title="{{ $moTa }}">
+                                            {{ $i }}
+                                        </label>
+                                    @endfor
+                                </div>
+                            </td>
+
+                            <td>
+    @if ($tieuChi->tenTieuChi->ten_tieu_chi === 'Todolist(1)')
+
+        <button
+            class="btn btn-warning btn-sm btn-call-api"
+            data-id-nhan-vien="{{ $nhanVien->id }}"
+            data-thang="{{ $danhMucThangNam->thang }}"
+            data-nam="{{ $danhMucThangNam->nam }}"
+            data-id-tieu-chi="{{ $tieuChi->id_tieu_chi }}"
+        >
+            Todolist(1)
+        </button>
+
+        <span class="badge bg-danger mt-2 d-none api-result"></span>
+
+    @else
+        <span class="text-muted">—</span>
+    @endif
+</td>
+
+
                                 {{-- <td><input type="number" name="diem_dat_duoc[]" class="form-control" placeholder="Điểm đạt được" required></td> --}}
-                                <td>
+                                {{-- <td>
                                     <input type="number" name="inputs[{{$tieuChi->id_tieu_chi}}]" id="input-{{$tieuChi->id}}" placeholder="Điểm đạt được"
                                     min="{{$tieuChi->tenTieuChi->diem_toi_thieu}}" max="{{$tieuChi->tenTieuChi->diem_toi_da}}"class="form-control" required/>
 
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                         @endif
@@ -93,8 +154,103 @@ $list = [
         </div>
         </form>
  */?>
-@push('script')
+@push('scripts')
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    document.addEventListener("click", function(e) {
+
+        if (e.target.classList.contains("btn-call-api")) {
+
+            let btn = e.target;
+            let idNhanVien = btn.dataset.idNhanVien;
+            let thang = btn.dataset.thang;
+            let nam = btn.dataset.nam;
+            let idTieuChi = btn.dataset.idTieuChi;
+
+            function getDaysInMonth(month, year) {
+                return new Date(year, month, 0).getDate();
+            }
+
+            // === LẤY NGÀY HIỆN TẠI ===
+            let today = new Date();
+            let thangHienTai = today.getMonth() + 1;
+            let namHienTai = today.getFullYear();
+            let ngayHienTai = today.getDate();
+            // === XÁC ĐỊNH NGÀY KẾT THÚC ===
+            let ngayKetThuc;
+
+            if (thang == thangHienTai && nam == namHienTai) {
+                // Nếu là tháng năm hiện tại → lấy tới ngày hôm nay
+                ngayKetThuc = `${String(ngayHienTai).padStart(2, '0')}-${String(thang).padStart(2, '0')}-${nam}`;
+            } else {
+                // Nếu tháng/năm khác → lấy ngày cuối tháng
+                let soNgayCuoi = getDaysInMonth(thang, nam);
+                ngayKetThuc = `${String(soNgayCuoi).padStart(2, '0')}-${String(thang).padStart(2, '0')}-${nam}`;
+            }
+
+            let soNgayCuoi = getDaysInMonth(thang, nam);
+            // Tạo chuỗi ngày dạng DD-MM-YYYY
+            let ngayBatDau = `01-${String(thang).padStart(2, '0')}-${nam}`;
+            // let ngayKetThuc = `${String(soNgayCuoi).padStart(2, '0')}-${String(thang).padStart(2, '0')}-${nam}`;
+
+            // Tự tạo ngày
+            // let ngayBatDau = `01-${thang}-${nam}`;
+            // let ngayKetThuc = `${soNgayCuoi}-${thang}-${nam}`;
+
+            let apiUrl = `https://todo.3ds.vn/api/task-theo-thang?id_nhan_vien=${idNhanVien}&ngay_bat_dau=${ngayBatDau}&ngay_ket_thuc=${ngayKetThuc}`;
+            console.log(apiUrl);
+            btn.innerHTML = "Đang lấy...";
+
+            fetch(apiUrl)
+                .then(res => res.json())
+                .then(data => {
+                    let soNgay = data?.so_ngay_khong_task ?? 0;
+
+                    // ⭐ QUY TẮC ĐIỂM
+                    let diem = 1;
+                    if (soNgay === 0) diem = 5;
+                    else if (soNgay === 1) diem = 4;
+                    else if (soNgay === 3) diem = 3;
+                    else if (soNgay === 4) diem = 2;
+                    else if (soNgay > 5) diem = 1;
+
+                    // ⭐ AUTO CHECK RADIO
+                    let radioId = `radio-${idTieuChi}-${diem}`;
+                    let radio = document.getElementById(radioId);
+
+                    if (radio) {
+                        radio.checked = true;
+                    }
+
+                    // ⭐ HIỆN KẾT QUẢ BÊN CẠNH NÚT
+                    let span = btn.parentElement.querySelector(".api-result");
+                    span.textContent = `Không task: ${soNgay} ngày (Điểm: ${diem})`;
+                    span.classList.remove("d-none");
+
+                    btn.innerHTML = "Todolist(1)";
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Không thể gọi API!");
+                    btn.innerHTML = "Todolist(1)";
+                });
+
+        }
+    });
+
+});
+</script>
+    {{-- Kích hoạt tooltip của Bootstrap --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
 
 @endpush
 </x-layout>

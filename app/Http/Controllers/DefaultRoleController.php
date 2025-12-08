@@ -37,8 +37,23 @@ class DefaultRoleController extends Controller
                 $role->givePermissionTo($permission);
             }
 
-
         }
+
+        // // Tạo quyền nếu chưa có
+        //     foreach ($permissionList as $permissionName) {
+        //         Permission::firstOrCreate([
+        //             'name' => $permissionName,
+        //             'guard_name' => 'web'
+        //         ]);
+        //     }
+
+        //     // Cập nhật FULL quyền cho Admin
+        //     $role->syncPermissions($permissionList);
+
+        //     return "Đã cập nhật quyền!";
+
+
+
         // $permission = Permission::create(['name' => 'add_danh_muc_thang_nam', 'guard_name' => 'web']);
 
         // $permission = Permission::create(['name' => 'edit_danh_muc_thang_nam', 'guard_name' => 'web']);

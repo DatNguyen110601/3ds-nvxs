@@ -12,6 +12,11 @@
 
         <!-- Styles -->
         @livewireStyles
+        <?php
+        $urlTiny = "https://cdn.tiny.cloud/1/" . config('services.tinymce.key') . "/tinymce/7/tinymce.min.js"
+        ?>
+
+        <script src="{{$urlTiny}}" referrerpolicy="origin"></script>
 
         <!-- Scripts -->
         <link rel="stylesheet" href="{{asset('css/app.css')}}">
@@ -39,7 +44,6 @@
         <script src="{{asset('js/app.js')}}"></script>
 
         @stack('modals')
-
         @livewireScripts
     </body>
 </html>

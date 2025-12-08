@@ -5,6 +5,13 @@ $list = [
     '#'=>'Danh sách tiêu chí',
 ];
 ?>
+<style>
+    .tooltip-inner {
+    max-width: 400px !important; /* chỉnh kích thước tùy ý */
+    white-space: normal;         /* cho phép xuống dòng */
+    text-align: left;            /* căn trái nội dung */
+}
+</style>
 
 <x-layout>
     <div class="flex items-center justify-between border-b py-2 breadcrumb"  style="border-block-color: red;" >
@@ -16,13 +23,16 @@ $list = [
     <div class=" d-flex justify-content-between mb-3 mt-4">
         <legend class="legend">Danh sách tiêu chí</legend>
         <div>
-            @can('add_danh_sach_tieu_chi')
+            {{-- @can('add_danh_sach_tieu_chi') --}}
+            @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
+
                 <a href="{{route('tieu-chi-nhan-vien.create')}}" class="btn btn-primary">
                     <span class="material-symbols-outlined" >
                         add_task
                     </span>
                     Thêm</a>
-            @endcan
+            @endif
+            {{-- @endcan --}}
         </div>
     </div>
 
@@ -60,7 +70,10 @@ $list = [
                     <tr>
                         <td>{{$key +1}}</td>
                         <td>{{$tieuChi->ten_tieu_chi}}</td>
-                        <td>{{$tieuChi->mo_ta}}</td>
+                        {{-- <td>{{$tieuChi->mo_ta}}</td> --}}
+                        <td data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $tieuChi->mo_ta }}">
+                            {{ \Illuminate\Support\Str::limit($tieuChi->mo_ta, 80, '...') }}
+                        </td>
 
                         <td>{{$tieuChi->diem_toi_thieu}}</td>
                         <td>{{$tieuChi->diem_toi_da}}</td>
@@ -79,14 +92,16 @@ $list = [
 
                         </td>
                         <td>
-                            @can('edit_danh_sach_tieu_chi')
+                            {{-- @can('edit_danh_sach_tieu_chi') --}}
+                            @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
+
                                 <a href="{{route('tieu-chi-nhan-vien.edit', $tieuChi)}}">
                                     <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;" title="Sửa">
                                         border_color
                                     </span>
                                 </a>
-                            @endcan
-                            @can('delete_danh_sach_tieu_chi')
+                            {{-- @endcan --}}
+                            {{-- @can('delete_danh_sach_tieu_chi') --}}
                                 <?php
 
                                 $url = route('tieu-chi-nhan-vien.delete', ['danhSachTieuChi' => $tieuChi]);
@@ -97,7 +112,8 @@ $list = [
                                         delete
                                     </span>
                                 </button>
-                            @endcan
+                                @endif
+                            {{-- @endcan --}}
 
                     </td>
                     </tr>
@@ -133,6 +149,14 @@ $list = [
         formXoa.action = url;
         formXoa.submit();
     }
+
+
+    document.addEventListener("DOMContentLoaded", function(){
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
     </script>
 @endpush
 </x-layout>
