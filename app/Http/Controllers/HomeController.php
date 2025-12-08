@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\DiemThang;
 use Illuminate\Http\Request;
 use App\Models\DanhMucThangNam;
+use App\Models\PhongBan;
 
 class HomeController extends Controller
 {
@@ -206,83 +207,80 @@ class HomeController extends Controller
 
 
     public function __invoke(Request $request)
-{
-    $nam = $request->input('year', date('Y'));
-    $thang = $request->input('month', date('n'));
-    $phongBan = $request->input('phong_ban'); // phòng ban gửi từ form (string)
+    {
+        $nam = $request->input('year', date('Y'));
+        $thang = $request->input('month', date('n'));
+        $phongBan = $request->input('phong_ban'); // phòng ban gửi từ form (string)
 
-    // Lấy DS nhân viên active
-    $dsNhanVien = User::where('status', User::STATUS_ACTIVE)
-        ->where('type', User::EMPLOYEE)
-        ->with('viTri')
-        ->get();
+        // Lấy DS nhân viên active
+        $dsNhanVien = User::where('status', User::STATUS_ACTIVE)
+            ->where('type', User::EMPLOYEE)
+            ->with('viTri')
+            ->get();
 
-    // ==== 1. Lọc NHÂN VIÊN THEO PHÒNG BAN ====
+        // ==== 1. Lọc NHÂN VIÊN THEO PHÒNG BAN ====
 
-    $user = auth()->user();
-    $phongBanUser = $user->viTri->first()->phong_ban ?? null;
+        $user = auth()->user();
+        $phongBanUser = $user->viTri->first()->id_phong_ban ?? null;
 
-    // Nếu chưa chọn phòng ban → mặc định phòng ban của user
-    if (!$phongBan || $phongBan === "0") {
-        $phongBan = $phongBanUser;
-    }
-    if ($phongBan && $phongBan !== "0") {
-        // Lấy ra danh sách ID nhân viên trong phòng ban đó
-        $listIdNhanVien = $dsNhanVien->filter(function ($nv) use ($phongBan) {
-            return $nv->viTri->first() && $nv->viTri->first()->phong_ban == $phongBan;
-        })->pluck('id')->toArray();
-    } else {
-        $listIdNhanVien = $dsNhanVien->pluck('id')->toArray();
-    }
+        // Nếu chưa chọn phòng ban → mặc định phòng ban của user
+        if (!$phongBan || $phongBan === "0") {
+            $phongBan = $phongBanUser;
+        }
+        if ($phongBan && $phongBan !== "0") {
+            // Lấy ra danh sách ID nhân viên trong phòng ban đó
+            $listIdNhanVien = $dsNhanVien->filter(function ($nv) use ($phongBan) {
+                return $nv->viTri->first() && $nv->viTri->first()->id_phong_ban == $phongBan;
+            })->pluck('id')->toArray();
+        } else {
+            $listIdNhanVien = $dsNhanVien->pluck('id')->toArray();
+        }
 
-    // ==== 2. Query DiemThang theo danh sách nhân viên ====
-    $query = DiemThang::with(['danhMucThangNam', 'nhanVien'])
-                ->whereIn('id_nhan_vien', $listIdNhanVien);
+        // ==== 2. Query DiemThang theo danh sách nhân viên ====
+        $query = DiemThang::with(['danhMucThangNam', 'nhanVien'])
+            ->whereIn('id_nhan_vien', $listIdNhanVien);
 
-    // ==== 3. Lọc theo năm / tháng ====
-    if ($nam != null && $thang != null) {
-        $query->whereRelation('danhMucThangNam', function ($q) use ($nam, $thang) {
-            $q->where('nam', $nam)->where('thang', $thang);
+        // ==== 3. Lọc theo năm / tháng ====
+        if ($nam != null && $thang != null) {
+            $query->whereRelation('danhMucThangNam', function ($q) use ($nam, $thang) {
+                $q->where('nam', $nam)->where('thang', $thang);
+            });
+        } elseif ($nam != null) {
+            $query->whereRelation('danhMucThangNam', function ($q) use ($nam) {
+                $q->where('nam', $nam);
+            });
+        } elseif ($thang != null) {
+            $query->whereRelation('danhMucThangNam', function ($q) use ($thang) {
+                $q->where('thang', $thang);
+            });
+        }
+
+        $data = $query->get();
+
+        // ==== 4. Group theo idDanhMucThangNam ====
+        $data = $data->groupBy(fn($item) => $item->danhMucThangNam->id);
+
+        $data = $data->map(function ($group, $idDanhMucThangNam) {
+            return [
+                'idDanhMucThangNam' => $idDanhMucThangNam,
+                'diemThangs' => $group->map(fn($d) => ['diemThang' => $d]),
+            ];
         });
-    } elseif ($nam != null) {
-        $query->whereRelation('danhMucThangNam', function ($q) use ($nam) {
-            $q->where('nam', $nam);
-        });
-    } elseif ($thang != null) {
-        $query->whereRelation('danhMucThangNam', function ($q) use ($thang) {
-            $q->where('thang', $thang);
-        });
+
+        // ==== 5. Lấy danh sách phòng ban duy nhất ====
+        // dump($dsNhanVien->pluck('viTri'));
+        // $dsPhongBan = $dsNhanVien->pluck('viTri')->flatten()->pluck('id_phong_ban')->unique();
+        $dsPhongBan = PhongBan::whereHas('userThuocPhongBan')->select(['id', 'name'])->get();
+        // dd($dsPhongBan);
+
+        return view('danh-muc-thang-nam.home1', [
+            'nam' => $nam,
+            'thang' => $thang,
+            'phongBan' => $phongBan,
+            'datas' => $data,
+            'danhMucThangNam' => DanhMucThangNam::all(),
+            'dsNhanVien' => $dsNhanVien,
+            'dsPhongBan' => $dsPhongBan,
+        ]);
     }
-
-    $data = $query->get();
-
-    // ==== 4. Group theo idDanhMucThangNam ====
-    $data = $data->groupBy(fn($item) => $item->danhMucThangNam->id);
-
-    $data = $data->map(function ($group, $idDanhMucThangNam) {
-        return [
-            'idDanhMucThangNam' => $idDanhMucThangNam,
-            'diemThangs' => $group->map(fn($d) => ['diemThang' => $d]),
-        ];
-    });
-
-    // ==== 5. Lấy danh sách phòng ban duy nhất ====
-    $dsPhongBan = $dsNhanVien->pluck('viTri')->flatten()->pluck('phong_ban')->unique();
-
-    return view('danh-muc-thang-nam.home1', [
-        'nam' => $nam,
-        'thang' => $thang,
-        'phongBan' => $phongBan,
-        'datas' => $data,
-        'danhMucThangNam' => DanhMucThangNam::all(),
-        'dsNhanVien' => $dsNhanVien,
-        'dsPhongBan' => $dsPhongBan,
-    ]);
 }
-
-
-
-}
-
-
-

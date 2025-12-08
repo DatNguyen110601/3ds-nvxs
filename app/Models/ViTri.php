@@ -63,5 +63,8 @@ class ViTri extends Model
         return $this->hasMany(Vitri::class, 'id_vi_tri_quan_ly', 'id')->orderBy('stt_cap_bac');
     }
 
-
+    public function phongBan(): BelongsTo
+    {
+        return $this->belongsTo(PhongBan::class, 'id_phong_ban');
+    }
 }

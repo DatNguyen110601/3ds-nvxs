@@ -50,8 +50,8 @@ $list = [
 
                             @foreach ($dsPhongBan as $pb)
 
-                                <option value="{{ $pb }}" {{ $phongBan == $pb ? 'selected' : '' }}>
-                                    {{ $pb }}
+                                <option value="{{ $pb->id }}" {{ $phongBan == $pb->id ? 'selected' : '' }}>
+                                    {{ $pb->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -201,7 +201,7 @@ $list = [
                             </td>
                             <td>
                                 @foreach ($value['diemThang']->nhanVien->viTri as $item)
-                                    {{$item->phong_ban}}
+                                    {{$item->phongBan->name}}
                                 @endforeach
                             </td>
                             <td>
