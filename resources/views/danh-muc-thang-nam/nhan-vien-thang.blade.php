@@ -27,34 +27,36 @@ $list = [
         <div class="d-flex">
             @can('duyet_diem')
                 <div class="mb-2 mr-2">
+                @if ($diemThang->diemTheoTieuChi->every(fn($duyet) => $duyet->duyet == 1))
 
-                    @if ($nhanVien->duyet == 1)
                                 <a href="{{route('duyet.removeDuyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
                                     'nhanVien' =>$nhanVien])}}" title="Bỏ duyệt"
                                     onclick="return confirm('Bạn có chắc chắn muốn BỎ DUYỆT?');"
                                     class="btn btn-success"
+                                    style="width:160px;"
                                     >
 
                                     <span class="material-symbols-outlined" style="color: #bbb">
                                         task_alt
                                     </span>
-                                    Duyệt
-                                </a>
-
-
-                            @else
-                                <a href="{{route('duyet.duyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
-                                    'nhanVien' =>$nhanVien])}}" title="Duyệt"
-                                    onclick="return confirm('Bạn có chắc chắn muốn DUYỆT?');"
-                                    class="btn btn-success"
-                                    style="width:160px"
-                                    >
-                                    <span class="material-symbols-outlined" style="color: #bbb">
-                                    task_alt
-                                    </span>
                                     Hủy Duyệt
                                 </a>
-                            @endif
+
+                    @else
+                        <a href="{{route('duyet.duyetDiemThang', ['danhMucThangNam' => $danhMucThangNam,
+                            'nhanVien' =>$nhanVien])}}" title="Duyệt"
+                            onclick="return confirm('Bạn có chắc chắn muốn DUYỆT?');"
+                            class="btn btn-success"
+                            style="width:160px"
+                            >
+                            <span class="material-symbols-outlined" style="color: #bbb">
+                            task_alt
+                            </span>
+                            Duyệt
+                        </a>
+
+                @endif
+
 
                 </div>
             @endcan
@@ -79,7 +81,7 @@ $list = [
                             border_color
                         </span>
                         Chấm điểm
-                        </a>
+                    </a>
                     </div>
 
                 @else
@@ -91,9 +93,9 @@ $list = [
 
                             ])}}" title="Chấm điểm"
                             style="width:160px;"
-                            class="btn btn-success"
+                            class="btn btn-info"
                             >
-                            <span class="material-symbols-outlined" style="color: #0dcaf0; ">
+                            <span class="material-symbols-outlined">
                                 border_color
                             </span>
                             Sửa điểm

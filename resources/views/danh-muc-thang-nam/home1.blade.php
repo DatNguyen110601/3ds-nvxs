@@ -48,8 +48,8 @@ $list = [
                             <option value="0">Tất cả phòng ban</option> --}}
 
 
-                            @foreach ($dsPhongBan as $pb)
 
+                            @foreach ($dsPhongBan as $pb)
                                 <option value="{{ $pb->id }}" {{ $phongBan == $pb->id ? 'selected' : '' }}>
                                     {{ $pb->name }}
                                 </option>
@@ -112,13 +112,13 @@ $list = [
                     {{-- @can('duyet_diem') --}}
                     @if (auth()->user()->hasRole('Admin') || auth()->user()->quyenHr())
 
-                        <div class="mb-2">
+                        {{-- <div class="mb-2">
                             <a href="{{route('duyet.duyetDiemThangAll', ['danhMucThangNam' => $danhMuc])}}" class="btn btn-success" title="Duyệt">
                                 <span class="material-symbols-outlined">
                                     task_alt
                                 </span>
                                 Duyệt</a>
-                        </div>
+                        </div> --}}
 
                     {{-- @endcan --}}
 

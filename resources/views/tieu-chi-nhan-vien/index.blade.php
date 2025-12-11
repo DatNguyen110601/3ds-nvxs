@@ -11,6 +11,33 @@ $list = [
     white-space: normal;         /* cho phép xuống dòng */
     text-align: left;            /* căn trái nội dung */
 }
+
+.mo-ta-wrap {
+    position: relative;
+}
+
+.mo-ta-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Hiện 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.mo-ta-text.expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+}
+
+.mo-ta-toggle {
+    background: none;
+    border: none;
+    color: #0d6efd; /* màu xanh kiểu bootstrap */
+    cursor: pointer;
+    padding: 0;
+    margin-top: 4px;
+
+}
+
 </style>
 
 <x-layout>
@@ -63,17 +90,34 @@ $list = [
                 </tr>
             </thead>
 
+
             <tbody class="text-center">
                 @if (count($dsTieuChi)!=0)
                     @foreach ($dsTieuChi as $key => $tieuChi)
-
+                {{-- @php
+                    // Chọn ký tự phân tách, ví dụ dấu |
+                    $separator = '#';
+                    $moTaArray = explode($separator, $tieuChi->mo_ta);
+                @endphp --}}
                     <tr>
+
                         <td>{{$key +1}}</td>
                         <td>{{$tieuChi->ten_tieu_chi}}</td>
-                        {{-- <td>{{$tieuChi->mo_ta}}</td> --}}
-                        <td data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $tieuChi->mo_ta }}">
-                            {{ \Illuminate\Support\Str::limit($tieuChi->mo_ta, 80, '...') }}
+                        {{-- <td  class="text-left">{!! nl2br(e(str_replace('#', "\n", $tieuChi->mo_ta))) !!}</td>
+ --}}
+
+                        <td style="max-width:300px;">
+                            <div class="mo-ta-wrap">
+                                <span class="mo-ta-text text-left">
+                                    {!! nl2br(e(str_replace('#', "\n", $tieuChi->mo_ta))) !!}
+                                </span>
+                                <button class="mo-ta-toggle">Xem thêm</button>
+                            </div>
                         </td>
+                        {{-- <td>{{$tieuChi->mo_ta}}</td> --}}
+                        {{-- <td data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $tieuChi->mo_ta }}">
+                            {{ \Illuminate\Support\Str::limit($tieuChi->mo_ta, 80, '...') }}
+                        </td> --}}
 
                         <td>{{$tieuChi->diem_toi_thieu}}</td>
                         <td>{{$tieuChi->diem_toi_da}}</td>
@@ -139,6 +183,25 @@ $list = [
 </form>
 
 @push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+                document.querySelectorAll(".mo-ta-toggle").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        let text = btn.previousElementSibling;
+
+                        if (text.classList.contains("expanded")) {
+                            text.classList.remove("expanded");
+                            btn.textContent = "Xem thêm";
+                        } else {
+                            text.classList.add("expanded");
+                            btn.textContent = "Thu gọn";
+                        }
+                    });
+                });
+            });
+    </script>
+
+
     <script type="text/javascript">
     function xoaTieuChi(url){
         if (!confirm(`Xóa tiêu chí này khỏi danh sách?`)) {

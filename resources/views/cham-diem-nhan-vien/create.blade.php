@@ -7,6 +7,8 @@ $list = [
         '#' => "Chấm điểm nhân viên {$nhanVien->name}"
 ];
 ?>
+
+
 <style>
     .btn-primary{
         background: #0a58ca !important;
@@ -19,8 +21,19 @@ $list = [
     </div>
     <div class=" d-flex justify-content-between mb-2">
         <legend class="legend">Chấm điểm nhân viên {{$nhanVien->name}}</legend>
-
     </div>
+
+    @if (session('status'))
+        <div class="alert alert-success">
+        {{ session('status') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+        </div>
+    @endif
 
     <div class="container mt-3">
         <form action="{{route('cham-diem-nhan-vien.store', ['danhMucThangNam' =>$danhMucThangNam, 'nhanVien' =>$nhanVien, 'diemThang' =>$diemThang])}}" method="POST">
@@ -48,7 +61,7 @@ $list = [
 
 
                             <td>
-                               @php
+                                @php
                                    // Chọn ký tự phân tách, ví dụ dấu |
                                     $separator = '#';
                                     $moTaArray = explode($separator, $tieuChi->tenTieuChi->mo_ta);
@@ -69,7 +82,7 @@ $list = [
                                             name="inputs[{{ $tieuChi->id_tieu_chi }}]"
                                             id="radio-{{ $tieuChi->id_tieu_chi }}-{{ $i }}"
                                             value="{{ $i }}"
-                                            required>
+                                            >
 
                                         <label class="btn btn-outline-primary btn-sm"
                                             for="radio-{{ $tieuChi->id_tieu_chi }}-{{ $i }}"
@@ -86,6 +99,7 @@ $list = [
     @if ($tieuChi->tenTieuChi->ten_tieu_chi === 'Todolist(1)')
 
         <button
+            type="button"
             class="btn btn-warning btn-sm btn-call-api"
             data-id-nhan-vien="{{ $nhanVien->id }}"
             data-thang="{{ $danhMucThangNam->thang }}"

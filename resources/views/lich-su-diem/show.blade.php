@@ -5,7 +5,11 @@ $list = [
     route('danh-muc-thang-nam.show', ['danhMucThangNam' => $danhMucThangNam,
                                     'diemThang' => $diemThang,])
                                     => "Nhân viên tháng {$danhMucThangNam->thang}",
-    '#' => "{$nhanVien->name}"
+    route('danh-muc-thang-nam.xem-diem-nhan-vien-thang', ['danhMucThangNam' => $danhMucThangNam,
+                                'nhanVien' => $nhanVien,])
+                                => "{$nhanVien->name}",
+
+    '#' => "Lịch sử"
 ];
 ?>
 
@@ -39,7 +43,123 @@ $list = [
         </div>
     @endif
     <div>
+        @if ($lichSuDiemThang->isNotEmpty())
+        <table class="table" style="border: 1px solid #000">
 
+    @php
+        // Lịch sử đầu tiên
+        $firstLs = $lichSuDiemThang->first();
+        // Danh sách tiêu chí
+        $listTieuChi = $firstLs->lsDiemTheoTieuChi ?? collect();
+    @endphp
+
+    <thead>
+        <tr>
+            <th scope="col">Tiêu chí</th>
+
+            {{-- Hiển thị ngày + Người chấm đúng 1 lần --}}
+            @foreach ($lichSuDiemThang as $ls)
+                <th scope="col" class="text-center">
+                    {{ $ls->created_at->format('d-m-Y (H:i)') }} <br>
+                    <small>Người chấm: {{ $ls->nguoiCham->name }}</small>
+                </th>
+            @endforeach
+        </tr>
+    </thead>
+
+    <tbody class="text-center">
+
+        {{-- Chỉ duyệt tiêu chí 1 lần --}}
+        @foreach ($listTieuChi as $index => $tc)
+            <tr>
+                <td>{{ $tc->tenTieuChi->ten_tieu_chi }}</td>
+
+                {{-- Chỉ hiển thị điểm --}}
+                @foreach ($lichSuDiemThang as $ls)
+                    @php
+                        $diem = $ls->lsDiemTheoTieuChi[$index];
+                    @endphp
+
+                    <td title="{{ $diem->ly_do ?? '-' }}">
+                        {{ $diem->diem }}
+                    </td>
+                @endforeach
+            </tr>
+        @endforeach
+
+        {{-- Tổng điểm của mỗi lịch sử --}}
+        <tr class="bg-gray-200 font-bold">
+            <td>Tổng điểm</td>
+            @foreach ($lichSuDiemThang as $ls)
+                <td>{{ $ls->tong_diem }}</td>
+            @endforeach
+        </tr>
+
+    </tbody>
+</table>
+        @elseif ($lichSuDiemThang->isEmpty())
+            <p class='text-danger p-3'>Không có dữ liệu lịch sử.</p>
+
+            @endif
+
+
+<?php /*
+            <table class="table" style="border: 1px solid #000">
+
+            @php
+                // Lịch sử đầu tiên
+                $firstLs = $lichSuDiemThang->first();
+                // Danh sách tiêu chí
+                $listTieuChi = $firstLs->lsDiemTheoTieuChi ?? collect();
+            @endphp
+
+            <thead>
+                <tr>
+                    <th scope="col">Tiêu chí</th>
+
+                    {{-- Hiển thị ngày + Người chấm đúng 1 lần --}}
+                    @foreach ($lichSuDiemThang as $ls)
+                        <th scope="col" class="text-center">
+                            {{ $ls->created_at->format('d-m-Y (H:i)') }} <br>
+                            <small>Người chấm: {{ $ls->nguoiCham->name }}</small>
+                        </th>
+                    @endforeach
+                </tr>
+            </thead>
+
+            <tbody class="text-center">
+
+                {{-- Chỉ duyệt tiêu chí 1 lần --}}
+                @foreach ($listTieuChi as $index => $tc)
+                    <tr>
+                        <td>{{ $tc->tenTieuChi->ten_tieu_chi }}</td>
+
+                        {{-- Chỉ hiển thị điểm --}}
+                        @foreach ($lichSuDiemThang as $ls)
+                            @php
+                                $diem = $ls->lsDiemTheoTieuChi[$index];
+                            @endphp
+
+                            <td title="{{ $diem->ly_do ?? '-' }}">
+                                {{ $diem->diem }}
+                            </td>
+                        @endforeach
+                    </tr>
+                @endforeach
+
+                {{-- Tổng điểm của mỗi lịch sử --}}
+                <tr class="bg-gray-200 font-bold">
+                    <td>Tổng điểm</td>
+                    @foreach ($lichSuDiemThang as $ls)
+                        <td>{{ $ls->tong_diem }}</td>
+                    @endforeach
+                </tr>
+
+            </tbody>
+        </table>
+*/?>
+
+<?php /*
             <table class="table " style="border: 1px solid #000">
                 <head>
                     <tr>
@@ -60,7 +180,7 @@ $list = [
 
                         @if ($index == count($lichSuDiemThang) - 1)
                             <td>{{$lsDiemThang->nhanVien->name}}</td>
-                           
+
                         @else
                             <td></td>
 
@@ -101,7 +221,7 @@ $list = [
                 @endif
                 @endforeach
             </table>
-
+*/?>
 
 
 
@@ -163,68 +283,7 @@ $list = [
         */?>
 
 
-        <?php /*
-            <table class="table ">
-                <head>
-                    <tr>
 
-                        <th scope="col">Nhân Viên</th>
-                        <th scope="col">Tiêu chí</th>
-                        <th scope="col">Điểm</th>
-                        <th scope="col">Hành động</th>
-
-                    </tr>
-                </head>
-
-                @if(!empty($diemThang))
-                <tbody class="text-center">
-
-                    <tr>
-
-                        <td>{{$diemThang->nhanVien->name}}</td>
-                        <td style="padding: 0px;">
-                            <table class="table" style="margin: 0px;">
-                                @foreach ($diemThang->diemTheoTieuChi as $diem)
-                                <tr><td>{{$diem->tenTieuChi->ten_tieu_chi}}</td></tr>
-
-                                @endforeach
-                            </table>
-                        </td>
-
-                        <td style="padding: 0px;" >
-                            <table class="table" style="margin: 0px;">
-                                @foreach ($diemThang->diemTheoTieuChi as $diem)
-                                <tr><td>{{$diem->diem}}</td></tr>
-
-                                @endforeach
-                            </table>
-                        </td>
-
-                        <td>
-                            @can('add_edit_diem')
-                                <a href="{{route('cham-diem-nhan-vien.create',
-                                [
-                                    'danhMucThangNam' =>$danhMucThangNam,
-                                    'nhanVien' => $nhanVien,
-
-                                ])}}" title="Chấm điểm">
-
-                                <span class="material-symbols-outlined fs-3" style="color: #0dcaf0;">
-                                        border_color
-                                </span>
-
-                                </a>
-                            @endcan
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"><strong>Tổng điểm: {{$diemThang->tong_diem}}</strong></td>
-                    </tr>
-                </tbody>
-            @endif
-
-            </table>
-        */ ?>
 
     </div>
 

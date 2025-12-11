@@ -51,7 +51,11 @@ $list = [
                             </span></a></td>
                             <td>
                                 @foreach ($nhanVien->viTri as $item)
-                                    {{$item->phong_ban}}
+                                @if (!empty($item->phongBan->name))
+                                    {{ $item->phongBan->name }}
+
+                                @endif
+                                    {{-- {{$item->phong_ban}} --}}
                                 @endforeach
                             </td>
                         <td>{{$nhanVien->email}}</td>

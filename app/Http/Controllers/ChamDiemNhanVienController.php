@@ -30,11 +30,12 @@ class ChamDiemNhanVienController extends Controller
      */
     public function create(DanhMucThangNam $danhMucThangNam, User $nhanVien){
 
+        session(['before_create_url' => url()->previous()]);
         $diemThang = $danhMucThangNam->diemThang->where('id_nhan_vien' , $nhanVien->id)->first();
         $diemTheoTieuChi = $diemThang->diemTheoTieuChi;
 
         $tieuChiTheoThang = $danhMucThangNam->dsTieuChiThang;
-        
+
         return view('cham-diem-nhan-vien.create', ['danhMucThangNam' => $danhMucThangNam,
                                                 'nhanVien' =>$nhanVien,
                                                 'diemThang' => $diemThang,
@@ -63,13 +64,17 @@ class ChamDiemNhanVienController extends Controller
 
         $tongDiem = $this->tinhTongDiem($diemThang);
 
+        // return redirect()->route('danh-muc-thang-nam.show',[
+        //     'danhMucThangNam' => $danhMucThangNam,
+        //     'diemThang' => $diemThang,
 
-        return redirect()->route('danh-muc-thang-nam.show',[
-            'danhMucThangNam' => $danhMucThangNam,
-            'diemThang' => $diemThang,
+        //  ])->with('status', "Chấm điểm nhân viên {$nhanVien->name} thành công!");
 
-         ])->with('status', "Chấm điểm nhân viên {$nhanVien->name} thành công!");
+        return redirect(session('before_create_url'))
+            ->with('status', "Chấm điểm nhân viên {$nhanVien->ho_ten} thành công!");
     }
+
+
 
     /**
      * Display the specified resource.
@@ -84,6 +89,7 @@ class ChamDiemNhanVienController extends Controller
      */
     public function edit(DanhMucThangNam $danhMucThangNam, User $nhanVien)
     {
+        session(['before_edit_url' => url()->previous()]);
         $diemThang = $danhMucThangNam->diemThang->where('id_nhan_vien' , $nhanVien->id)->first();
         $diemTheoTieuChi = $diemThang->diemTheoTieuChi;
 
@@ -161,11 +167,17 @@ class ChamDiemNhanVienController extends Controller
             }
         }
 
-        return redirect()->route('danh-muc-thang-nam.show',[
-            'danhMucThangNam' => $danhMucThangNam,
-            'diemThang' => $diemThang,
+        return redirect(session('before_edit_url'))
+            ->with('status', "Sửa điểm nhân viên {$nhanVien->ho_ten} thành công!");
 
-         ])->with('status', "Sửa điểm nhân viên {$nhanVien->ho_ten} thành công!");
+        // return redirect()->back()
+        // ->with('status', "Sửa điểm nhân viên {$nhanVien->ho_ten} thành công!");
+
+    //     return redirect()->route('danh-muc-thang-nam.show',[
+    //         'danhMucThangNam' => $danhMucThangNam,
+    //         'diemThang' => $diemThang,
+
+    //      ])->with('status', "Sửa điểm nhân viên {$nhanVien->ho_ten} thành công!");
     }
 
     /**

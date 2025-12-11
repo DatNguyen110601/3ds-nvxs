@@ -100,14 +100,19 @@ $list = [
                         <td>{{$value->nhanVien->name}}<br>
                             <span style="color: #565555; font-size:13px;">
                                 @foreach ($value->nhanVien->viTri as $item)
-                                    ({{$item->ten_vi_tri}})
+                                    {{$item->ten_vi_tri}}
                                 @endforeach
                             </span>
                         </td>
 
                             <td>
                                 @foreach ($value->nhanVien->viTri as $item)
-                                    {{$item->phong_ban}}
+                                @if (!empty($item->phongBan->name))
+                                {{ $item->phongBan->name }}
+
+                                @endif
+
+                                    {{-- {{$item->phong_ban}} --}}
                                 @endforeach
                             </td>
 
